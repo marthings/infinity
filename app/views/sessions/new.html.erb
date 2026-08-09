@@ -6,12 +6,12 @@
 <%= form_with url: session_path do |form| %>
   <p>
     <%= form.label :email_address, "Email address" %>
-    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address] %>
+    <%= form.email_field :email_address, required: true, autofocus: true, autocomplete: "username", value: params[:email_address], placeholder: "name@example.com" %>
   </p>
 
   <p>
     <%= form.label :password, "Password" %>
-    <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72 %>
+    <%= form.password_field :password, required: true, autocomplete: "current-password", maxlength: 72, placeholder: "Enter your password" %>
   </p>
 
   <p><%= form.submit "Sign in" %></p>

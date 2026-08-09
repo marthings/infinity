@@ -13,27 +13,27 @@
   <div class="capture-form-fields">
     <p class="field">
       <%= form.label :source_url, "Link" %>
-      <%= form.url_field :source_url %>
+      <%= form.url_field :source_url, placeholder: "https://example.com" %>
     </p>
 
     <p class="field">
       <%= form.label :source_name %>
-      <%= form.text_field :source_name %>
+      <%= form.text_field :source_name, placeholder: "e.g. YouTube" %>
     </p>
 
     <p class="field">
       <%= form.label :title %>
-      <%= form.text_field :title %>
+      <%= form.text_field :title, placeholder: "e.g. Studio inspiration" %>
     </p>
 
     <p class="field">
       <%= form.label :description %>
-      <%= form.text_area :description, rows: 4 %>
+      <%= form.text_area :description, rows: 4, placeholder: "What is worth remembering?" %>
     </p>
 
     <p class="field">
       <%= form.label :note %>
-      <%= form.text_area :note, rows: 6 %>
+      <%= form.text_area :note, rows: 6, placeholder: "Add your thoughts" %>
     </p>
 
     <p class="field">
