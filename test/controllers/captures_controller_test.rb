@@ -59,6 +59,15 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_response :not_found
   end
 
+  test "show provides native navigation for a capture" do
+    get capture_path(captures(:link))
+
+    assert_response :success
+    assert_select "[data-native-navbar=?]", captures(:link).title
+    assert_select "h1.native-hidden", captures(:link).title
+    assert_select "a", "Back to captures"
+  end
+
   test "update changes the signed-in user's capture" do
     patch capture_path(captures(:link)), params: { capture: { title: "Updated link" } }
 
