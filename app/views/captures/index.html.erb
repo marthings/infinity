@@ -1,0 +1,14 @@
+<section class="capture-page">
+  <header class="page-header">
+    <h1>Infinity</h1>
+    <%= link_to "New capture", new_capture_path %>
+  </header>
+
+  <% if @captures.any? %>
+    <div class="capture-list">
+      <%= render @captures %>
+    </div>
+  <% else %>
+    <p>No captures yet.</p>
+  <% end %>
+</section>

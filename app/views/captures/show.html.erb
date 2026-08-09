@@ -1,0 +1,34 @@
+<section class="capture-page">
+  <header class="page-header">
+    <h1><%= @capture.title.presence || @capture.source_name.presence || "Untitled capture" %></h1>
+    <%= link_to "Back to captures", captures_path %>
+  </header>
+
+  <% if source_url = safe_source_url(@capture.source_url) %>
+    <p><%= link_to @capture.source_url, source_url, target: "_blank", rel: "noopener noreferrer" %></p>
+  <% end %>
+
+  <% if @capture.description.present? %>
+    <p><%= @capture.description %></p>
+  <% end %>
+
+  <% if @capture.note.present? %>
+    <p><%= @capture.note %></p>
+  <% end %>
+
+  <% if @capture.uploads.attached? %>
+    <section aria-labelledby="uploads-title">
+      <h2 id="uploads-title">Uploads</h2>
+      <ul>
+        <% @capture.uploads.each do |upload| %>
+          <li><%= link_to upload.filename, rails_blob_path(upload, disposition: "attachment") %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <nav class="capture-actions" aria-label="Capture actions">
+    <%= link_to "Edit", edit_capture_path(@capture) %>
+    <%= button_to "Delete", @capture, method: :delete, form: { data: { turbo_confirm: "Delete this capture?" } } %>
+  </nav>
+</section>

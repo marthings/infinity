@@ -1,0 +1,51 @@
+<%= form_with model: capture, class: "capture-form" do |form| %>
+  <% if capture.errors.any? %>
+    <section class="form-errors" role="alert" aria-labelledby="form-errors-title">
+      <h2 id="form-errors-title"><%= pluralize(capture.errors.count, "error") %> prevented this capture from being saved</h2>
+      <ul>
+        <% capture.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <div class="capture-form-fields">
+    <p class="field">
+      <%= form.label :source_url, "Link" %>
+      <%= form.url_field :source_url %>
+    </p>
+
+    <p class="field">
+      <%= form.label :source_name %>
+      <%= form.text_field :source_name %>
+    </p>
+
+    <p class="field">
+      <%= form.label :title %>
+      <%= form.text_field :title %>
+    </p>
+
+    <p class="field">
+      <%= form.label :description %>
+      <%= form.text_area :description, rows: 4 %>
+    </p>
+
+    <p class="field">
+      <%= form.label :note %>
+      <%= form.text_area :note, rows: 6 %>
+    </p>
+
+    <p class="field">
+      <%= form.label :published_at %>
+      <%= form.datetime_local_field :published_at %>
+    </p>
+
+    <p class="field">
+      <%= form.label :uploads %>
+      <%= form.file_field :uploads, multiple: true %>
+    </p>
+  </div>
+
+  <p><%= form.submit %></p>
+<% end %>
