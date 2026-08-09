@@ -10,6 +10,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "link[rel='stylesheet'][href*='family=Prata']"
+    assert_select "[data-native-navbar='']"
     assert_select "[data-native-navbar='Infinity']", count: 0
     assert_select "header.home-hero.native-inset-top h1", "Infinity"
     assert_select "header.home-hero form[data-controller='quick-capture']"
