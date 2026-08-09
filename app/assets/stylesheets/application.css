@@ -291,24 +291,62 @@
   }
 
   .application-navigation {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-4);
-    justify-content: space-between;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-3);
+    align-items: center;
     max-inline-size: var(--wide-content-width);
     margin-inline: auto;
     padding: var(--space-3) var(--space-4);
   }
 
-  .application-navigation a {
+  .application-brand {
+    color: var(--color-on-surface);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-title);
+    font-weight: var(--font-weight-heading);
+    text-decoration: none;
+  }
+
+  .menu-toggle {
+    display: grid;
+    gap: var(--space-1);
+    place-content: center;
+    inline-size: var(--control-min-height);
+    block-size: var(--control-min-height);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-control);
+    background: transparent;
+    color: var(--color-on-surface);
+  }
+
+  .menu-toggle:hover {
+    background: var(--color-surface-container);
+  }
+
+  .menu-toggle span {
+    inline-size: var(--space-5);
+    block-size: 2px;
+    background: currentColor;
+  }
+
+  .application-menu {
+    display: grid;
+    grid-column: 1 / -1;
+    gap: var(--space-2);
+    padding-block: var(--space-2);
+  }
+
+  .application-menu a {
     color: var(--color-on-surface-variant);
     font-size: var(--font-size-label);
     font-weight: var(--font-weight-label);
     text-decoration: none;
   }
 
-  .application-navigation a:hover,
-  .application-navigation a:focus-visible {
+  .application-menu a:hover,
+  .application-menu a:focus-visible {
     color: var(--color-on-surface);
   }
 
