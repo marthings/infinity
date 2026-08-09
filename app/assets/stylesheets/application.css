@@ -233,21 +233,16 @@
     background: var(--color-surface);
   }
 
-  .native-home-header {
-    display: none;
-  }
-
-  [data-native-app] .native-home-header {
-    position: fixed;
-    inset-block-start: 0;
-    inset-inline: 0;
-    z-index: 1;
+  .home-hero {
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
+    inline-size: 100vw;
     min-block-size: var(--home-hero-height);
     padding-inline: var(--space-4);
     padding-block-end: var(--space-8);
+    margin-inline: calc(50% - 50vw);
+    margin-block-start: calc(-1 * var(--space-6));
     overflow: hidden;
     border-end-start-radius: var(--radius-hero);
     border-end-end-radius: var(--radius-hero);
@@ -255,13 +250,35 @@
     color: var(--color-on-home-header);
   }
 
-  .native-home-header h1 {
+  [data-native-app] .home-hero {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 1;
+  }
+
+  .home-hero h1 {
     margin: 0;
     color: var(--color-on-home-header);
     font-family: var(--font-heading);
     font-size: var(--font-size-display);
     line-height: var(--line-height-tight);
     text-align: center;
+  }
+
+  .home-hero .quick-capture-form {
+    inline-size: min(100%, var(--content-width));
+    margin-inline: auto;
+    padding-block: var(--space-4) 0;
+  }
+
+  .home-hero .field label,
+  .home-hero .quick-capture-actions a {
+    color: var(--color-on-home-header);
+  }
+
+  .native-home-page {
+    padding-block-start: var(--space-5);
   }
 
   [data-native-app] .native-home-page {
