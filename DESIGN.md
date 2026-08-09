@@ -91,7 +91,7 @@ Page content is unframed. Inputs, buttons, and compact controls use a 16px radiu
 
 ## Components
 
-Forms use clear labels, full-width controls on `surface-container`, visible keyboard focus, and direct primary actions. Grouped form regions use `surface-container-high` so their nested controls remain perceptible. Capture rows are separated by whitespace rather than dividers or cards. On the web, the header places the Infinity brand at the start and exposes primary navigation through an accessible hamburger disclosure. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
+Forms use clear labels, full-width controls on `surface-container`, visible keyboard focus, and direct primary actions. Grouped form regions use `surface-container-high` so their nested controls remain perceptible. Capture rows are separated by whitespace rather than dividers or cards. On the web, the header places the Infinity brand at the start and exposes primary navigation through an accessible hamburger Popover API menu anchored to its trigger. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
 
 The native Home root uses a custom `home-header` hero behind the status area instead of a native navigation-bar title. It uses the `home-hero-height` and `hero` shape tokens, with a large Stack Sans Notch "Save it" h1 anchored in the lower portion. Its content clears the safe area while the background remains edge-to-edge.
 
