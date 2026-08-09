@@ -15,7 +15,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "header.home-hero form[data-controller='quick-capture']"
     assert_select "h1", "Infinity"
     assert_select "form[data-controller='quick-capture']"
-    assert_select "input[name='capture[source_url]'][data-quick-capture-target='link']"
+    assert_select "input[name='capture[source_url]'][data-quick-capture-target='link'][placeholder='https://example.com']"
     assert_select "form.quick-capture-form input[type='submit']", count: 0
     assert_select "input[type='file']", count: 0
     assert_select "input[name='capture[collection_ids][]']", count: 0
@@ -76,6 +76,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.native-hidden", "Back to captures"
     assert_select "input[name='capture[collection_ids][]'][value=?]", collections(:inspiration).id.to_s
     assert_select "input[name='capture[tag_ids][]'][value=?]", tags(:design).id.to_s
+    assert_select "input[name='capture[title]'][placeholder='e.g. Studio inspiration']"
   end
 
   test "edit provides native form navigation" do

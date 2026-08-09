@@ -20,7 +20,7 @@
 
     <p class="field">
       <%= form.label :email_address %>
-      <%= form.email_field :email_address, required: true, autocomplete: "email" %>
+      <%= form.email_field :email_address, required: true, autocomplete: "email", placeholder: "name@example.com" %>
     </p>
 
     <fieldset class="profile-password-fields">
@@ -28,12 +28,12 @@
 
       <p class="field">
         <%= form.label :password, "New password" %>
-        <%= form.password_field :password, autocomplete: "new-password" %>
+        <%= form.password_field :password, autocomplete: "new-password", placeholder: "Leave blank to keep your password" %>
       </p>
 
       <p class="field">
         <%= form.label :password_confirmation, "Confirm new password" %>
-        <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
+        <%= form.password_field :password_confirmation, autocomplete: "new-password", placeholder: "Repeat your new password" %>
       </p>
     </fieldset>
 
