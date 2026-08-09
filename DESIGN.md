@@ -4,6 +4,8 @@ name: Infinity
 description: A quiet personal library for links, files, images, and inspiration.
 colors:
   surface: "#ffffff"
+  surface-container: "#f5f5f5"
+  surface-container-high: "#ebebeb"
   surface-variant: "#f5f5f5"
   surface-raised: "#ffffff"
   on-surface: "#171717"
@@ -17,6 +19,8 @@ colors:
   focus: "#171717"
 colors_dark:
   surface: "#181818"
+  surface-container: "#242424"
+  surface-container-high: "#2c2c2c"
   surface-variant: "#242424"
   surface-raised: "#1f1f1f"
   on-surface: "#f4f4f4"
@@ -80,7 +84,7 @@ Page content is unframed. Inputs, buttons, and compact controls use a 16px radiu
 
 ## Components
 
-Forms use clear labels, full-width controls with a light neutral background, visible keyboard focus, and direct primary actions. Capture rows are separated by whitespace rather than dividers or cards. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
+Forms use clear labels, full-width controls on `surface-container`, visible keyboard focus, and direct primary actions. Grouped form regions use `surface-container-high` so their nested controls remain perceptible. Capture rows are separated by whitespace rather than dividers or cards. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
 
 ## Do's and Don'ts
 
