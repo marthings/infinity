@@ -1,0 +1,1 @@
+This local-only attachment exists to exercise Infinity upload and download flows.
