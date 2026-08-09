@@ -15,7 +15,10 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[name='capture[source_url]'][data-quick-capture-target='link']"
     assert_select "form.quick-capture-form input[type='submit']", count: 0
     assert_select "input[type='file']", count: 0
+    assert_select "input[name='capture[collection_ids][]']", count: 0
+    assert_select "input[name='capture[tag_ids][]']", count: 0
     assert_select "a[href=?]", new_capture_path, text: "Add manually"
+    assert_select "nav.application-navigation a[href=?]", collections_path, text: "Collections"
     assert_select "a", text: captures(:link).title
     assert_select "a", text: captures(:note).note, count: 0
   end
@@ -68,6 +71,8 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-native-navbar='New capture']"
     assert_select "h1.native-hidden", "New capture"
     assert_select "a.native-hidden", "Back to captures"
+    assert_select "input[name='capture[collection_ids][]'][value=?]", collections(:inspiration).id.to_s
+    assert_select "input[name='capture[tag_ids][]'][value=?]", tags(:design).id.to_s
   end
 
   test "edit provides native form navigation" do
@@ -100,6 +105,34 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to capture_path(captures(:link))
     assert_equal "Updated link", captures(:link).reload.title
+  end
+
+  test "create assigns the signed-in user's collections and tags" do
+    assert_difference -> { CollectionCapture.count }, +1 do
+      assert_difference -> { Tagging.count }, +1 do
+        post captures_path, params: { capture: { note: "An organized idea", collection_ids: [ collections(:inspiration).id ], tag_ids: [ tags(:design).id ] } }
+      end
+    end
+
+    capture = Capture.last
+    assert_equal [ collections(:inspiration) ], capture.collections.to_a
+    assert_equal [ tags(:design) ], capture.tags.to_a
+  end
+
+  test "create does not assign another user's collections or tags" do
+    post captures_path, params: { capture: { note: "A private idea", collection_ids: [ collections(:private).id ], tag_ids: [ tags(:private).id ] } }
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_empty Capture.last.collections
+    assert_empty Capture.last.tags
+  end
+
+  test "update removes a capture from collections and tags" do
+    patch capture_path(captures(:link)), params: { capture: { collection_ids: [ "" ], tag_ids: [ "" ] } }
+
+    assert_redirected_to capture_path(captures(:link))
+    assert_empty captures(:link).reload.collections
+    assert_empty captures(:link).tags
   end
 
   test "destroy removes the signed-in user's capture" do

@@ -4,6 +4,8 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :captures
+  resources :collections
+  resources :tags
   root "captures#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

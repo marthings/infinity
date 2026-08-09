@@ -1,0 +1,20 @@
+<section class="capture-page">
+  <%= native_navbar_tag("Collections") %>
+
+  <header class="page-header">
+    <h1 class="native-hidden">Collections</h1>
+    <%= link_to "New collection", new_collection_path %>
+  </header>
+
+  <nav class="capture-actions" aria-label="Collection navigation">
+    <%= link_to "Manage tags", tags_path %>
+  </nav>
+
+  <% if @collections.any? %>
+    <div class="collection-list">
+      <%= render @collections %>
+    </div>
+  <% else %>
+    <p>No collections yet.</p>
+  <% end %>
+</section>

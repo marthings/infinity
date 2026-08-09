@@ -1,0 +1,20 @@
+<section class="capture-page">
+  <%= native_navbar_tag("Tags") %>
+
+  <header class="page-header">
+    <h1 class="native-hidden">Tags</h1>
+    <%= link_to "New tag", new_tag_path %>
+  </header>
+
+  <nav class="capture-actions" aria-label="Tag navigation">
+    <%= link_to "Manage collections", collections_path %>
+  </nav>
+
+  <% if @tags.any? %>
+    <div class="tag-list">
+      <%= render @tags %>
+    </div>
+  <% else %>
+    <p>No tags yet.</p>
+  <% end %>
+</section>

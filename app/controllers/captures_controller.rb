@@ -11,9 +11,11 @@ class CapturesController < ApplicationController
 
   def new
     @capture = Current.user.captures.build
+    load_organization
   end
 
   def edit
+    load_organization
   end
 
   def create
@@ -22,8 +24,13 @@ class CapturesController < ApplicationController
     if @capture.save
       redirect_to @capture, notice: "Capture saved."
     else
-      @captures = Current.user.captures.order(created_at: :desc) if quick_capture?
-      render quick_capture? ? :index : :new, status: :unprocessable_entity
+      if quick_capture?
+        @captures = Current.user.captures.order(created_at: :desc)
+        render :index, status: :unprocessable_entity
+      else
+        load_organization
+        render :new, status: :unprocessable_entity
+      end
     end
   end
 
@@ -31,6 +38,7 @@ class CapturesController < ApplicationController
     if @capture.update(capture_params)
       redirect_to @capture, notice: "Capture updated."
     else
+      load_organization
       render :edit, status: :unprocessable_entity
     end
   end
@@ -46,7 +54,15 @@ class CapturesController < ApplicationController
     end
 
     def capture_params
-      params.expect(capture: [ :source_url, :source_name, :title, :description, :note, :published_at, uploads: [] ])
+      attributes = params.expect(capture: [ :source_url, :source_name, :title, :description, :note, :published_at, uploads: [], collection_ids: [], tag_ids: [] ])
+      attributes[:collection_ids] = Current.user.collections.where(id: attributes[:collection_ids]).ids
+      attributes[:tag_ids] = Current.user.tags.where(id: attributes[:tag_ids]).ids
+      attributes
+    end
+
+    def load_organization
+      @collections = Current.user.collections.order(:name)
+      @tags = Current.user.tags.order(:name)
     end
 
     def quick_capture?

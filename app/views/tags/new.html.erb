@@ -1,0 +1,11 @@
+<section class="capture-page">
+  <%= native_form_tag %>
+  <%= native_navbar_tag("New tag") %>
+
+  <header class="page-header">
+    <h1 class="native-hidden">New tag</h1>
+    <%= link_to "Back to tags", tags_path, class: "native-hidden" %>
+  </header>
+
+  <%= render "form", tag: @tag %>
+</section>

@@ -9,6 +9,9 @@ tabs:
   - title: Home
     path: /
     icon: house
+  - title: Collections
+    path: /collections
+    icon: folder
   - title: Profile
     path: /profile
     icon: person

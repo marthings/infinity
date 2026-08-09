@@ -1,0 +1,19 @@
+<%= form_with model: tag, class: "capture-form" do |form| %>
+  <% if tag.errors.any? %>
+    <section class="form-errors" role="alert" aria-labelledby="tag-errors-title">
+      <h2 id="tag-errors-title"><%= pluralize(tag.errors.count, "error") %> prevented this tag from being saved</h2>
+      <ul>
+        <% tag.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <p class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true, autofocus: true %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>
