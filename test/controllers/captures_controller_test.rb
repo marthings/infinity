@@ -13,6 +13,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "h1.native-hidden", "Infinity"
     assert_select "form[data-controller='quick-capture']"
     assert_select "input[name='capture[source_url]'][data-quick-capture-target='link']"
+    assert_select "form.quick-capture-form input[type='submit']", count: 0
     assert_select "input[type='file']", count: 0
     assert_select "a[href=?]", new_capture_path, text: "Add manually"
     assert_select "a", text: captures(:link).title
