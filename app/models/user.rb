@@ -3,4 +3,5 @@ class User < ApplicationRecord
   has_many :sessions, dependent: :destroy
 
   normalizes :email_address, with: ->(e) { e.strip.downcase }
+  validates :email_address, presence: true, format: { with: URI::MailTo::EMAIL_REGEXP }
 end
