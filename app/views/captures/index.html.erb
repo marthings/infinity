@@ -1,16 +1,17 @@
 <header class="home-hero native-inset-top">
-  <h1>Infinity</h1>
-  <%= render "quick_form", capture: @capture %>
+    <h1>Infinity</h1>
+    <%= render "quick_form", capture: @capture %>
 </header>
 
 <section class="capture-page native-home-page">
-  <%= turbo_stream_from [ Current.user, :captures ] %>
+    <%= native_navbar_tag %>
+    <%= turbo_stream_from [ Current.user, :captures ] %>
 
-  <% if @captures.any? %>
-    <div class="capture-list">
-      <%= render @captures %>
-    </div>
-  <% else %>
-    <p>No captures yet.</p>
-  <% end %>
+    <% if @captures.any? %>
+        <div class="capture-list">
+            <%= render @captures %>
+        </div>
+    <% else %>
+        <p>No captures yet.</p>
+    <% end %>
 </section>
