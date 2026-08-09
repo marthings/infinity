@@ -44,9 +44,12 @@ spacing:
   xxl: 48px
 rounded:
   none: 0px
-  sm: 4px
-  md: 8px
+  sm: 8px
+  md: 16px
   full: 9999px
+lines:
+  text-decoration: 1px
+  focus: 2px
 ---
 
 # Infinity
@@ -65,19 +68,19 @@ Use the platform system sans-serif stack for speed, legibility, and a native-adj
 
 ## Layout
 
-Spacing follows a 4px base and 8px layout rhythm. Content is constrained for readable line lengths, with mobile-first padding. Tab-root pages do not repeat their native navigation title in native content; browser headings and subview headings remain semantic.
+Spacing follows a 4px base and 8px layout rhythm. Content is constrained for readable line lengths, with mobile-first padding. Hierarchy comes from whitespace, alignment, typography, and restrained surface changes rather than framed regions or dividers. Tab-root pages do not repeat their native navigation title in native content; browser headings and subview headings remain semantic.
 
 ## Elevation & Depth
 
-The default interface is flat. Use borders and surface changes to separate durable regions. Avoid shadows except for transient overlays introduced later.
+The default interface is flat and borderless. Use whitespace and subtle surface changes to separate durable regions. Avoid shadows except for transient overlays introduced later.
 
 ## Shapes
 
-Page content is unframed. Inputs, buttons, and compact framed tools use an 8px radius. Rounded pills are reserved for compact status or segmented controls, not general layout.
+Page content is unframed. Inputs, buttons, and compact controls use a 16px radius by default. Rounded pills are reserved for compact status or segmented controls, not general layout.
 
 ## Components
 
-Forms use clear labels, full-width controls, visible keyboard focus, and direct primary actions. Capture rows use dividers rather than cards. Navigation links expose their current or keyboard state through color and focus treatment.
+Forms use clear labels, full-width controls with a light neutral background, visible keyboard focus, and direct primary actions. Capture rows are separated by whitespace rather than dividers or cards. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
 
 ## Do's and Don'ts
 
