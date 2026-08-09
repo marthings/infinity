@@ -34,12 +34,30 @@
 
   <body>
     <% unless native_app? %>
-      <header class="application-header">
-        <nav class="application-navigation" aria-label="Primary navigation">
-          <%= link_to "Home", root_path %>
-          <%= link_to "Collections", collections_path %>
-          <%= link_to "Profile", profile_path %>
-        </nav>
+      <header class="application-header" data-controller="menu">
+        <div class="application-navigation">
+          <%= link_to "Infinity", root_path, class: "application-brand" %>
+
+          <button
+            class="menu-toggle"
+            type="button"
+            aria-label="Open navigation"
+            aria-controls="application-menu"
+            aria-expanded="false"
+            data-menu-target="button"
+            data-action="click->menu#toggle keydown@window->menu#close"
+          >
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+          </button>
+
+          <nav id="application-menu" class="application-menu" aria-label="Primary navigation" hidden data-menu-target="menu">
+            <%= link_to "Home", root_path %>
+            <%= link_to "Collections", collections_path %>
+            <%= link_to "Profile", profile_path %>
+          </nav>
+        </div>
       </header>
     <% end %>
 

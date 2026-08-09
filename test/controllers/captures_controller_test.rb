@@ -12,9 +12,9 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "link[rel='stylesheet'][href*='family=Prata']"
     assert_select "[data-native-navbar='']"
     assert_select "[data-native-navbar='Infinity']", count: 0
-    assert_select "header.home-hero.native-inset-top h1", "Infinity"
+    assert_select "header.home-hero.native-inset-top h1", "Save it"
     assert_select "header.home-hero form[data-controller='quick-capture']"
-    assert_select "h1", "Infinity"
+    assert_select "h1", "Save it"
     assert_select "form[data-controller='quick-capture']"
     assert_select "input[name='capture[source_url]'][data-quick-capture-target='link'][placeholder='https://example.com']"
     assert_select "form.quick-capture-form input[type='submit']", count: 0
@@ -22,7 +22,9 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[name='capture[collection_ids][]']", count: 0
     assert_select "input[name='capture[tag_ids][]']", count: 0
     assert_select "a[href=?]", new_capture_path, text: "Add manually"
-    assert_select "nav.application-navigation a[href=?]", collections_path, text: "Collections"
+    assert_select "a.application-brand[href=?]", root_path, text: "Infinity"
+    assert_select "button.menu-toggle[aria-controls='application-menu'][aria-expanded='false']"
+    assert_select "nav#application-menu[hidden] a[href=?]", collections_path, text: "Collections"
     assert_select "a", text: captures(:link).title
     assert_select "a", text: captures(:note).note, count: 0
   end
@@ -63,7 +65,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     post captures_path, params: { capture: { source_url: " " }, capture_form: "quick" }
 
     assert_response :unprocessable_entity
-    assert_select "h1", "Infinity"
+    assert_select "h1", "Save it"
     assert_select "[role=alert]"
   end
 
