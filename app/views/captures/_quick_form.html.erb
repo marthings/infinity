@@ -1,4 +1,4 @@
-<%= form_with model: capture, class: "quick-capture-form" do |form| %>
+<%= form_with model: capture, class: "quick-capture-form", data: { controller: "quick-capture" } do |form| %>
   <%= hidden_field_tag :capture_form, "quick" %>
 
   <% if capture.errors.any? %>
@@ -14,16 +14,11 @@
 
   <p class="field">
     <%= form.label :source_url, "Paste a link" %>
-    <%= form.url_field :source_url %>
-  </p>
-
-  <p class="field">
-    <%= form.label :uploads, "Choose files" %>
-    <%= form.file_field :uploads, multiple: true %>
+    <%= form.url_field :source_url, autocomplete: "url", placeholder: "https://...", data: { quick_capture_target: "link", action: "paste->quick-capture#submitPastedLink" } %>
   </p>
 
   <p class="quick-capture-actions">
-    <%= form.submit "Save capture" %>
-    <%= link_to "Add details", new_capture_path %>
+    <%= form.submit "Save link", class: "visually-hidden" %>
+    <%= link_to "Add manually", new_capture_path %>
   </p>
 <% end %>

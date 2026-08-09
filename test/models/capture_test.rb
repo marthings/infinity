@@ -1,6 +1,8 @@
 require "test_helper"
 
 class CaptureTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
   test "belongs to its user" do
     assert_equal users(:one), captures(:link).user
   end
@@ -46,6 +48,25 @@ class CaptureTest < ActiveSupport::TestCase
 
     assert_predicate capture, :valid?
     assert_equal "My example", capture.title
+  end
+
+  test "enriches a generated link title with preview metadata" do
+    capture = Capture.create!(user: users(:one), source_url: "https://www.example.com/article")
+    preview = Capture::LinkPreview::Preview.new("An example article", "A useful description", "Example")
+
+    capture.apply_link_preview(preview)
+
+    assert_equal "An example article", capture.reload.title
+    assert_equal "A useful description", capture.description
+    assert_equal "Example", capture.source_name
+  end
+
+  test "queues link enrichment after creating a link capture" do
+    capture = captures(:link)
+
+    assert_enqueued_with(job: EnrichCaptureLinkJob) do
+      capture.send(:enrich_link_preview_later)
+    end
   end
 
   test "accepts HTTP and HTTPS source URLs" do
