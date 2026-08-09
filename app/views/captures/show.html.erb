@@ -18,6 +18,28 @@
     <p><%= @capture.note %></p>
   <% end %>
 
+  <% if @capture.collections.any? %>
+    <section aria-labelledby="capture-collections-title">
+      <h2 id="capture-collections-title">Collections</h2>
+      <ul>
+        <% @capture.collections.each do |collection| %>
+          <li><%= link_to collection.name, collection %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @capture.tags.any? %>
+    <section aria-labelledby="capture-tags-title">
+      <h2 id="capture-tags-title">Tags</h2>
+      <ul>
+        <% @capture.tags.each do |tag| %>
+          <li><%= link_to tag.name, tag %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
   <% if @capture.uploads.attached? %>
     <section aria-labelledby="uploads-title">
       <h2 id="uploads-title">Uploads</h2>

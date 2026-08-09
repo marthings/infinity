@@ -45,6 +45,44 @@
       <%= form.label :uploads %>
       <%= form.file_field :uploads, multiple: true %>
     </p>
+
+    <fieldset class="capture-form-group">
+      <legend>Collections</legend>
+
+      <% if @collections.any? %>
+        <div class="choice-list">
+          <% @collections.each do |collection| %>
+            <label class="choice">
+              <%= form.check_box :collection_ids, { multiple: true }, collection.id, nil %>
+              <span><%= collection.name %></span>
+            </label>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No collections yet.</p>
+      <% end %>
+
+      <%= link_to "Manage collections", collections_path %>
+    </fieldset>
+
+    <fieldset class="capture-form-group">
+      <legend>Tags</legend>
+
+      <% if @tags.any? %>
+        <div class="choice-list">
+          <% @tags.each do |tag| %>
+            <label class="choice">
+              <%= form.check_box :tag_ids, { multiple: true }, tag.id, nil %>
+              <span><%= tag.name %></span>
+            </label>
+          <% end %>
+        </div>
+      <% else %>
+        <p>No tags yet.</p>
+      <% end %>
+
+      <%= link_to "Manage tags", tags_path %>
+    </fieldset>
   </div>
 
   <p><%= form.submit %></p>

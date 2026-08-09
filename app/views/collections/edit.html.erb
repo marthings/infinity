@@ -1,0 +1,11 @@
+<section class="capture-page">
+  <%= native_form_tag %>
+  <%= native_navbar_tag("Edit collection") %>
+
+  <header class="page-header">
+    <h1 class="native-hidden">Edit collection</h1>
+    <%= link_to "Back to collection", @collection, class: "native-hidden" %>
+  </header>
+
+  <%= render "form", collection: @collection %>
+</section>

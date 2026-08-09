@@ -1,0 +1,19 @@
+<%= form_with model: collection, class: "capture-form" do |form| %>
+  <% if collection.errors.any? %>
+    <section class="form-errors" role="alert" aria-labelledby="collection-errors-title">
+      <h2 id="collection-errors-title"><%= pluralize(collection.errors.count, "error") %> prevented this collection from being saved</h2>
+      <ul>
+        <% collection.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <p class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name, required: true, autofocus: true %>
+  </p>
+
+  <p><%= form.submit %></p>
+<% end %>
