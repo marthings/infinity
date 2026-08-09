@@ -1,9 +1,11 @@
 <section class="capture-page">
-  <%= native_navbar_tag("Tags") %>
+  <%= native_navbar_tag("Tags") do |navbar| %>
+    <%= navbar.button icon: "plus", href: new_tag_path %>
+  <% end %>
 
   <header class="page-header">
     <h1 class="native-hidden">Tags</h1>
-    <%= link_to "New tag", new_tag_path %>
+    <%= link_to "New tag", new_tag_path, class: "primary-action native-hidden" %>
   </header>
 
   <nav class="capture-actions" aria-label="Tag navigation">
