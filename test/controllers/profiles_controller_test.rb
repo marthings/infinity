@@ -10,6 +10,7 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "meta[name=viewport][content='width=device-width,initial-scale=1,viewport-fit=cover']"
+    assert_select "link[rel=stylesheet][href*='application']"
     assert_select "h1", "Profile"
     assert_select "input[value=?]", users(:one).email_address
     assert_select "[data-native-form]"
