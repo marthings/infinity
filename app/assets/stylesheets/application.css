@@ -11,6 +11,7 @@
 
 .capture-page,
 .capture-form,
+.quick-capture-form,
 .capture-list,
 .capture-form-fields,
 .field {
@@ -24,7 +25,8 @@
 }
 
 .page-header,
-.capture-actions {
+.capture-actions,
+.quick-capture-actions {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
