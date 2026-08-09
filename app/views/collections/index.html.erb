@@ -1,9 +1,11 @@
 <section class="capture-page">
-  <%= native_navbar_tag("Collections") %>
+  <%= native_navbar_tag("Collections") do |navbar| %>
+    <%= navbar.button icon: "plus", href: new_collection_path %>
+  <% end %>
 
   <header class="page-header">
     <h1 class="native-hidden">Collections</h1>
-    <%= link_to "New collection", new_collection_path %>
+    <%= link_to "New collection", new_collection_path, class: "primary-action native-hidden" %>
   </header>
 
   <nav class="capture-actions" aria-label="Collection navigation">

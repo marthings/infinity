@@ -10,7 +10,8 @@ class CollectionsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "[data-native-navbar='Collections']"
-    assert_select "a[href=?]", new_collection_path, text: "New collection"
+    assert_select "[data-native-button][data-native-icon='plus'][data-native-href=?]", new_collection_path
+    assert_select "a.primary-action.native-hidden[href=?]", new_collection_path, text: "New collection"
     assert_select "a", text: collections(:inspiration).name
     assert_select "a", text: collections(:private).name, count: 0
   end

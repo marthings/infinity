@@ -10,7 +10,8 @@ class TagsControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :success
     assert_select "[data-native-navbar='Tags']"
-    assert_select "a[href=?]", new_tag_path, text: "New tag"
+    assert_select "[data-native-button][data-native-icon='plus'][data-native-href=?]", new_tag_path
+    assert_select "a.primary-action.native-hidden[href=?]", new_tag_path, text: "New tag"
     assert_select "a", text: tags(:design).name
     assert_select "a", text: tags(:private).name, count: 0
   end
