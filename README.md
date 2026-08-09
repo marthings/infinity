@@ -29,6 +29,17 @@ bin/rails server
 
 Visit `http://localhost:3000`.
 
+### Local Seed Data
+
+To prepare a local database and add repeatable manual-test data:
+
+```sh
+bin/rails db:prepare
+bin/rails db:seed
+```
+
+The seeds run only in development. They create fictional `maya@example.test` and `leo@example.test` accounts with the password `password`, plus captures, a local upload, collections, placements, and tags. Running the command again does not create duplicates.
+
 ### Test And Quality Checks
 
 ```sh
