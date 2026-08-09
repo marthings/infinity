@@ -1,6 +1,9 @@
 <section class="profile-page">
+  <%= native_form_tag %>
+  <%= native_navbar_tag("Profile") %>
+
   <header class="page-header">
-    <h1>Profile</h1>
+    <h1 class="native-hidden">Profile</h1>
   </header>
 
   <%= form_with model: @user, url: profile_path, scope: :profile, class: "profile-form" do |form| %>

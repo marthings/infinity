@@ -11,6 +11,8 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "h1", "Profile"
     assert_select "input[value=?]", users(:one).email_address
+    assert_select "[data-native-form]"
+    assert_select "[data-native-navbar='Profile']"
     assert_select "[data-native-identity]"
     assert_select "main.native-inset"
   end
