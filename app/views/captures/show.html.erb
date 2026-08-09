@@ -1,6 +1,8 @@
 <section class="capture-page">
+  <%= native_navbar_tag(@capture.title.presence || @capture.source_name.presence || "Untitled capture") %>
+
   <header class="page-header">
-    <h1><%= @capture.title.presence || @capture.source_name.presence || "Untitled capture" %></h1>
+    <h1 class="native-hidden"><%= @capture.title.presence || @capture.source_name.presence || "Untitled capture" %></h1>
     <%= link_to "Back to captures", captures_path %>
   </header>
 
