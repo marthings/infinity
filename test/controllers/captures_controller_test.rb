@@ -53,6 +53,15 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "[role=alert]"
   end
 
+  test "new provides native navigation" do
+    get new_capture_path
+
+    assert_response :success
+    assert_select "[data-native-navbar='New capture']"
+    assert_select "h1.native-hidden", "New capture"
+    assert_select "a", "Back to captures"
+  end
+
   test "show does not expose another user's capture" do
     get capture_path(captures(:note))
 
