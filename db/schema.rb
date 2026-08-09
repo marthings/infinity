@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_08_09_141027) do
+ActiveRecord::Schema[8.1].define(version: 2026_08_09_141629) do
   create_table "active_storage_attachments", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.datetime "created_at", null: false
@@ -52,6 +52,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_141027) do
     t.index ["user_id", "created_at"], name: "index_captures_on_user_id_and_created_at"
   end
 
+  create_table "collection_captures", force: :cascade do |t|
+    t.integer "capture_id", null: false
+    t.integer "collection_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "position", null: false
+    t.datetime "updated_at", null: false
+    t.index ["capture_id"], name: "index_collection_captures_on_capture_id"
+    t.index ["collection_id", "capture_id"], name: "index_collection_captures_on_collection_id_and_capture_id", unique: true
+    t.index ["collection_id", "position"], name: "index_collection_captures_on_collection_id_and_position", unique: true
+    t.check_constraint "position >= 0", name: "collection_captures_position_non_negative"
+  end
+
+  create_table "collections", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id", "created_at"], name: "index_collections_on_user_id_and_created_at"
+  end
+
   create_table "sessions", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "ip_address"
@@ -59,6 +79,23 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_141027) do
     t.string "user_agent"
     t.integer "user_id", null: false
     t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
+  create_table "taggings", force: :cascade do |t|
+    t.integer "capture_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "tag_id", null: false
+    t.datetime "updated_at", null: false
+    t.index ["capture_id"], name: "index_taggings_on_capture_id"
+    t.index ["tag_id", "capture_id"], name: "index_taggings_on_tag_id_and_capture_id", unique: true
+  end
+
+  create_table "tags", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name", null: false
+    t.datetime "updated_at", null: false
+    t.integer "user_id", null: false
+    t.index ["user_id", "name"], name: "index_tags_on_user_id_and_name", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -72,5 +109,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_09_141027) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "captures", "users"
+  add_foreign_key "collection_captures", "captures"
+  add_foreign_key "collection_captures", "collections"
+  add_foreign_key "collections", "users"
   add_foreign_key "sessions", "users"
+  add_foreign_key "taggings", "captures"
+  add_foreign_key "taggings", "tags"
+  add_foreign_key "tags", "users"
 end
