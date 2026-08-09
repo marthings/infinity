@@ -33,8 +33,9 @@
     --space-5: 1.5rem;
     --space-6: 2rem;
     --space-8: 3rem;
-    --radius-control: 0.5rem;
-    --border-width: 1px;
+    --radius-control: 1rem;
+    --text-decoration-thickness: 1px;
+    --focus-width: 2px;
     --content-width: 44rem;
     --wide-content-width: 72rem;
     --control-min-height: 2.75rem;
@@ -141,7 +142,7 @@
   a {
     color: inherit;
     text-decoration-color: var(--color-outline-strong);
-    text-decoration-thickness: var(--border-width);
+    text-decoration-thickness: var(--text-decoration-thickness);
     text-underline-offset: var(--space-1);
   }
 
@@ -158,9 +159,9 @@
     inline-size: 100%;
     min-block-size: var(--control-min-height);
     padding: var(--space-2) var(--space-3);
-    border: var(--border-width) solid var(--color-outline);
+    border: 0;
     border-radius: var(--radius-control);
-    background: var(--color-surface-raised);
+    background: var(--color-surface-variant);
     color: var(--color-on-surface);
     font-size: max(var(--font-size-body), 16px);
     line-height: var(--line-height-body);
@@ -179,7 +180,7 @@
   input[type="submit"] {
     min-block-size: var(--control-min-height);
     padding: var(--space-2) var(--space-4);
-    border: var(--border-width) solid var(--color-primary);
+    border: 0;
     border-radius: var(--radius-control);
     background: var(--color-primary);
     color: var(--color-on-primary);
@@ -197,7 +198,7 @@
   }
 
   :focus-visible {
-    outline: calc(var(--border-width) * 2) solid var(--color-focus);
+    outline: var(--focus-width) solid var(--color-focus);
     outline-offset: var(--space-1);
   }
 
@@ -209,7 +210,6 @@
 
 @layer components {
   .application-header {
-    border-block-end: var(--border-width) solid var(--color-outline);
     background: var(--color-surface);
   }
 
@@ -280,13 +280,13 @@
   .profile-password-fields {
     margin: 0;
     padding: var(--space-4);
-    border: var(--border-width) solid var(--color-outline);
+    border: 0;
     border-radius: var(--radius-control);
+    background: var(--color-surface-variant);
   }
 
   .quick-capture-form {
     padding-block: var(--space-5);
-    border-block: var(--border-width) solid var(--color-outline);
   }
 
   .quick-capture-actions,
@@ -310,17 +310,13 @@
 
   .capture-list {
     display: grid;
-    border-block: var(--border-width) solid var(--color-outline);
+    gap: var(--space-5);
   }
 
   .capture-item {
     display: grid;
     gap: var(--space-2);
-    padding-block: var(--space-5);
-  }
-
-  .capture-item + .capture-item {
-    border-block-start: var(--border-width) solid var(--color-outline);
+    padding-block: var(--space-1);
   }
 
   .capture-item h2 a {
@@ -348,7 +344,6 @@
     display: grid;
     gap: var(--space-2);
     padding: var(--space-4);
-    border-inline-start: calc(var(--border-width) * 4) solid var(--color-error);
     background: var(--color-surface-variant);
   }
 
