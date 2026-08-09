@@ -1,0 +1,15 @@
+<article class="capture-item">
+  <h2><%= link_to capture.title.presence || capture.source_name.presence || "Untitled capture", capture %></h2>
+
+  <% if source_url = safe_source_url(capture.source_url) %>
+    <p><%= link_to capture.source_url, source_url, target: "_blank", rel: "noopener noreferrer" %></p>
+  <% end %>
+
+  <% if capture.description.present? %>
+    <p><%= capture.description %></p>
+  <% end %>
+
+  <% if capture.note.present? %>
+    <p><%= capture.note %></p>
+  <% end %>
+</article>

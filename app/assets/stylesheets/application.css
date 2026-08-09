@@ -8,3 +8,25 @@
  *
  * Consider organizing styles into separate files for maintainability.
  */
+
+.capture-page,
+.capture-form,
+.capture-list,
+.capture-form-fields,
+.field {
+  display: grid;
+  gap: 1rem;
+}
+
+.capture-page {
+  max-inline-size: 72rem;
+  margin-inline: auto;
+}
+
+.page-header,
+.capture-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: space-between;
+}
