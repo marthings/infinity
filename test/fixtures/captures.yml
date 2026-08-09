@@ -1,0 +1,11 @@
+link:
+  user: one
+  source_url: https://example.com/inspiration
+  source_name: Example
+  title: A saved link
+  description: A useful piece of inspiration.
+  published_at: 2026-08-08 10:00:00
+
+note:
+  user: two
+  note: Remember this idea.
