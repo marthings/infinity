@@ -1,6 +1,10 @@
 class Capture < ApplicationRecord
   belongs_to :user
 
+  has_many :collection_captures, dependent: :destroy
+  has_many :collections, through: :collection_captures
+  has_many :taggings, dependent: :destroy
+  has_many :tags, through: :taggings
   has_many_attached :uploads
 
   normalizes :source_url, :source_name, :title, :description, :note, with: ->(value) { value&.strip&.presence }
