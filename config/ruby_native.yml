@@ -2,6 +2,13 @@
 # https://rubynative.com/docs
 
 app:
-  # Keep web navigation while the app's native navigation structure takes shape.
   mode: normal
   entry_path: /
+
+tabs:
+  - title: Home
+    path: /
+    icon: house
+  - title: Profile
+    path: /profile
+    icon: person

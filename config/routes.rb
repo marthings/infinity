@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resource :registration, only: %i[ new create ]
+  resource :profile, only: %i[ show update ]
   resource :session
   resources :passwords, param: :token
   resources :captures
