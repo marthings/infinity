@@ -14,6 +14,8 @@ colors:
   outline-strong: "#9c9c9c"
   primary: "#171717"
   on-primary: "#ffffff"
+  home-header: "#171717"
+  on-home-header: "#ffffff"
   error: "#b42318"
   on-error: "#ffffff"
   focus: "#171717"
@@ -29,6 +31,8 @@ colors_dark:
   outline-strong: "#787878"
   primary: "#f4f4f4"
   on-primary: "#181818"
+  home-header: "#171717"
+  on-home-header: "#ffffff"
   error: "#ffb4ab"
   on-error: "#690005"
   focus: "#f4f4f4"
@@ -85,6 +89,8 @@ Page content is unframed. Inputs, buttons, and compact controls use a 16px radiu
 ## Components
 
 Forms use clear labels, full-width controls on `surface-container`, visible keyboard focus, and direct primary actions. Grouped form regions use `surface-container-high` so their nested controls remain perceptible. Capture rows are separated by whitespace rather than dividers or cards. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
+
+The native Home root uses a custom `home-header` surface behind the status area instead of a native navigation-bar title. Its content clears the safe area while the background remains edge-to-edge.
 
 ## Do's and Don'ts
 

@@ -14,6 +14,8 @@
     --color-outline-strong: #9c9c9c;
     --color-primary: #171717;
     --color-on-primary: #ffffff;
+    --color-home-header: #171717;
+    --color-on-home-header: #ffffff;
     --color-error: #b42318;
     --color-on-error: #ffffff;
     --color-focus: #171717;
@@ -58,6 +60,8 @@
       --color-outline-strong: #787878;
       --color-primary: #f4f4f4;
       --color-on-primary: #181818;
+      --color-home-header: #171717;
+      --color-on-home-header: #ffffff;
       --color-error: #ffb4ab;
       --color-on-error: #690005;
       --color-focus: #f4f4f4;
@@ -76,6 +80,8 @@
     --color-outline-strong: #9c9c9c;
     --color-primary: #171717;
     --color-on-primary: #ffffff;
+    --color-home-header: #171717;
+    --color-on-home-header: #ffffff;
     --color-error: #b42318;
     --color-on-error: #ffffff;
     --color-focus: #171717;
@@ -93,6 +99,8 @@
     --color-outline-strong: #787878;
     --color-primary: #f4f4f4;
     --color-on-primary: #181818;
+    --color-home-header: #171717;
+    --color-on-home-header: #ffffff;
     --color-error: #ffb4ab;
     --color-on-error: #690005;
     --color-focus: #f4f4f4;
@@ -221,6 +229,31 @@
 @layer components {
   .application-header {
     background: var(--color-surface);
+  }
+
+  .native-home-header {
+    display: none;
+  }
+
+  [data-native-app] .native-home-header {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 1;
+    padding-inline: var(--space-4);
+    background: var(--color-home-header);
+    color: var(--color-on-home-header);
+  }
+
+  .native-home-header p {
+    padding-block: var(--space-3);
+    font-family: var(--font-heading);
+    font-size: var(--font-size-title);
+    line-height: var(--line-height-tight);
+  }
+
+  [data-native-app] .native-home-page {
+    padding-block-start: var(--space-8);
   }
 
   .application-navigation {
