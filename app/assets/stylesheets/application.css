@@ -333,7 +333,8 @@
     font-size: var(--font-size-label);
   }
 
-  .primary-action {
+  .primary-action,
+  .primary-action:visited {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -349,6 +350,7 @@
 
   .primary-action:hover {
     background: var(--color-on-surface);
+    color: var(--color-on-primary);
   }
 
   .capture-form,
