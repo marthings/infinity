@@ -37,11 +37,11 @@ colors_dark:
   on-error: "#690005"
   focus: "#f4f4f4"
 typography:
-  display: { fontFamily: "Prata", fontSize: 48px, fontWeight: 400, lineHeight: 56px }
-  heading: { fontFamily: "Prata", fontSize: 24px, fontWeight: 400, lineHeight: 32px }
-  title: { fontFamily: "Prata", fontSize: 18px, fontWeight: 400, lineHeight: 24px }
-  body: { fontFamily: "Stack Sans Notch", fontSize: 16px, fontWeight: 400, lineHeight: 24px }
-  label: { fontFamily: "Stack Sans Notch", fontSize: 14px, fontWeight: 600, lineHeight: 20px }
+  display: { fontFamily: "Stack Sans Notch", fontSize: 48px, fontWeight: 700, lineHeight: 56px }
+  heading: { fontFamily: "Stack Sans Notch", fontSize: 24px, fontWeight: 700, lineHeight: 32px }
+  title: { fontFamily: "Stack Sans Notch", fontSize: 18px, fontWeight: 700, lineHeight: 24px }
+  body: { fontFamily: "Prata", fontSize: 16px, fontWeight: 400, lineHeight: 24px }
+  label: { fontFamily: "Prata", fontSize: 14px, fontWeight: 400, lineHeight: 20px }
 spacing:
   base: 4px
   xs: 4px
@@ -75,7 +75,7 @@ The product uses black and white as its primary contrast pair. Neutral grays sep
 
 ## Typography
 
-Use Stack Sans Notch for body and interface text, with system sans-serif fallbacks while the web font loads. Use Prata at its native 400 weight for headings only, with a serif fallback. Body text is never smaller than 16px in inputs. Weight and spacing establish hierarchy; do not use compressed tracking or oversized display type in application views.
+Use Prata at its native 400 weight for body and interface text, with a serif fallback. Use Stack Sans Notch for headings, with system sans-serif fallbacks while the web font loads. Body text is never smaller than 16px in inputs. Weight and spacing establish hierarchy; do not use compressed tracking or oversized display type in application views.
 
 ## Layout
 
@@ -93,7 +93,7 @@ Page content is unframed. Inputs, buttons, and compact controls use a 16px radiu
 
 Forms use clear labels, full-width controls on `surface-container`, visible keyboard focus, and direct primary actions. Grouped form regions use `surface-container-high` so their nested controls remain perceptible. Capture rows are separated by whitespace rather than dividers or cards. Navigation links expose their current or keyboard state through color and focus treatment; focus outlines are the sole persistent outlines in the interface.
 
-The native Home root uses a custom `home-header` hero behind the status area instead of a native navigation-bar title. It uses the `home-hero-height` and `hero` shape tokens, with a large Prata h1 anchored in the lower portion. Its content clears the safe area while the background remains edge-to-edge.
+The native Home root uses a custom `home-header` hero behind the status area instead of a native navigation-bar title. It uses the `home-hero-height` and `hero` shape tokens, with a large Stack Sans Notch h1 anchored in the lower portion. Its content clears the safe area while the background remains edge-to-edge.
 
 ## Do's and Don'ts
 
