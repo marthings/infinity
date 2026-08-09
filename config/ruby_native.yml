@@ -2,7 +2,7 @@
 # https://rubynative.com/docs
 
 app:
-  mode: normal
+  mode: advanced
   entry_path: /
 
 tabs:

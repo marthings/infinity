@@ -9,6 +9,8 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     get captures_path
 
     assert_response :success
+    assert_select "[data-native-navbar='Infinity']"
+    assert_select "h1.native-hidden", "Infinity"
     assert_select "a", text: captures(:link).title
     assert_select "a", text: captures(:note).note, count: 0
   end
@@ -57,9 +59,20 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     get new_capture_path
 
     assert_response :success
+    assert_select "[data-native-form]"
     assert_select "[data-native-navbar='New capture']"
     assert_select "h1.native-hidden", "New capture"
     assert_select "a", "Back to captures"
+  end
+
+  test "edit provides native form navigation" do
+    get edit_capture_path(captures(:link))
+
+    assert_response :success
+    assert_select "[data-native-form]"
+    assert_select "[data-native-navbar='Edit capture']"
+    assert_select "h1.native-hidden", "Edit capture"
+    assert_select "a", "Back to capture"
   end
 
   test "show does not expose another user's capture" do
