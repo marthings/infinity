@@ -25,8 +25,20 @@
   </head>
 
   <body>
-    <main>
+    <% unless native_app? %>
+      <header class="application-header">
+        <nav class="application-navigation" aria-label="Primary navigation">
+          <%= link_to "Home", root_path %>
+          <%= link_to "Profile", profile_path %>
+        </nav>
+      </header>
+    <% end %>
+
+    <main class="native-inset">
       <%= yield %>
     </main>
+
+    <%= native_tabs_tag if authenticated? %>
+    <%= native_identity_tag Current.user&.id %>
   </body>
 </html>

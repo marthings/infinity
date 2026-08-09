@@ -1,0 +1,39 @@
+<section class="profile-page">
+  <header class="page-header">
+    <h1>Profile</h1>
+  </header>
+
+  <%= form_with model: @user, url: profile_path, scope: :profile, class: "profile-form" do |form| %>
+    <% if @user.errors.any? %>
+      <section class="form-errors" role="alert" aria-labelledby="profile-errors-title">
+        <h2 id="profile-errors-title"><%= pluralize(@user.errors.count, "error") %> prevented your profile from being saved</h2>
+        <ul>
+          <% @user.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </section>
+    <% end %>
+
+    <p class="field">
+      <%= form.label :email_address %>
+      <%= form.email_field :email_address, required: true, autocomplete: "email" %>
+    </p>
+
+    <fieldset class="profile-password-fields">
+      <legend>Change password</legend>
+
+      <p class="field">
+        <%= form.label :password, "New password" %>
+        <%= form.password_field :password, autocomplete: "new-password" %>
+      </p>
+
+      <p class="field">
+        <%= form.label :password_confirmation, "Confirm new password" %>
+        <%= form.password_field :password_confirmation, autocomplete: "new-password" %>
+      </p>
+    </fieldset>
+
+    <p><%= form.submit "Save profile" %></p>
+  <% end %>
+</section>

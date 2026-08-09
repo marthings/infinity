@@ -14,9 +14,18 @@
 .quick-capture-form,
 .capture-list,
 .capture-form-fields,
+.profile-form,
+.profile-password-fields,
 .field {
   display: grid;
   gap: 1rem;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  font-size: max(1rem, 16px);
 }
 
 .capture-page {
@@ -26,7 +35,8 @@
 
 .page-header,
 .capture-actions,
-.quick-capture-actions {
+.quick-capture-actions,
+.application-navigation {
   display: flex;
   flex-wrap: wrap;
   gap: 1rem;
