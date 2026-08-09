@@ -26,6 +26,14 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to capture_path(Capture.last)
     assert_predicate Capture.last.uploads, :attached?
+    assert_equal "inspiration.txt", Capture.last.title
+  end
+
+  test "quick capture generates a title from a link hostname" do
+    post captures_path, params: { capture: { source_url: "https://www.youtube.com/watch?v=example" }, capture_form: "quick" }
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_equal "youtube.com", Capture.last.title
   end
 
   test "create renders errors for an empty capture" do
