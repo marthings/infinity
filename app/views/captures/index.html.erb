@@ -4,7 +4,9 @@
 </header>
 
 <section class="capture-page native-home-page">
-    <%= native_navbar_tag %>
+    <%= native_navbar_tag do |navbar| %>
+        <%= navbar.button icon: "plus", href: new_capture_path %>
+    <% end %>
     <%= turbo_stream_from [ Current.user, :captures ] %>
 
     <% if @captures.any? %>
