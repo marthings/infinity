@@ -4,6 +4,8 @@
   :root {
     color-scheme: light dark;
     --color-surface: #ffffff;
+    --color-surface-container: #f5f5f5;
+    --color-surface-container-high: #ebebeb;
     --color-surface-variant: #f5f5f5;
     --color-surface-raised: #ffffff;
     --color-on-surface: #171717;
@@ -45,6 +47,8 @@
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       --color-surface: #181818;
+      --color-surface-container: #242424;
+      --color-surface-container-high: #2c2c2c;
       --color-surface-variant: #242424;
       --color-surface-raised: #1f1f1f;
       --color-on-surface: #f4f4f4;
@@ -61,6 +65,8 @@
 
   [data-theme="light"] {
     --color-surface: #ffffff;
+    --color-surface-container: #f5f5f5;
+    --color-surface-container-high: #ebebeb;
     --color-surface-variant: #f5f5f5;
     --color-surface-raised: #ffffff;
     --color-on-surface: #171717;
@@ -76,6 +82,8 @@
 
   [data-theme="dark"] {
     --color-surface: #181818;
+    --color-surface-container: #242424;
+    --color-surface-container-high: #2c2c2c;
     --color-surface-variant: #242424;
     --color-surface-raised: #1f1f1f;
     --color-on-surface: #f4f4f4;
@@ -161,7 +169,7 @@
     padding: var(--space-2) var(--space-3);
     border: 0;
     border-radius: var(--radius-control);
-    background: var(--color-surface-variant);
+    background: var(--color-surface-container);
     color: var(--color-on-surface);
     font-size: max(var(--font-size-body), 16px);
     line-height: var(--line-height-body);
@@ -282,7 +290,7 @@
     padding: var(--space-4);
     border: 0;
     border-radius: var(--radius-control);
-    background: var(--color-surface-variant);
+    background: var(--color-surface-container-high);
   }
 
   .quick-capture-form {
