@@ -1,0 +1,7 @@
+# Ruby Native reads this file on launch to configure the native app.
+# https://rubynative.com/docs
+
+app:
+  # Keep web navigation while the app's native navigation structure takes shape.
+  mode: normal
+  entry_path: /
