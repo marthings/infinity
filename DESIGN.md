@@ -33,11 +33,11 @@ colors_dark:
   on-error: "#690005"
   focus: "#f4f4f4"
 typography:
-  display: { fontFamily: "system-ui", fontSize: 32px, fontWeight: 700, lineHeight: 40px }
-  heading: { fontFamily: "system-ui", fontSize: 24px, fontWeight: 700, lineHeight: 32px }
-  title: { fontFamily: "system-ui", fontSize: 18px, fontWeight: 650, lineHeight: 24px }
-  body: { fontFamily: "system-ui", fontSize: 16px, fontWeight: 400, lineHeight: 24px }
-  label: { fontFamily: "system-ui", fontSize: 14px, fontWeight: 600, lineHeight: 20px }
+  display: { fontFamily: "Prata", fontSize: 32px, fontWeight: 400, lineHeight: 40px }
+  heading: { fontFamily: "Prata", fontSize: 24px, fontWeight: 400, lineHeight: 32px }
+  title: { fontFamily: "Prata", fontSize: 18px, fontWeight: 400, lineHeight: 24px }
+  body: { fontFamily: "Stack Sans Notch", fontSize: 16px, fontWeight: 400, lineHeight: 24px }
+  label: { fontFamily: "Stack Sans Notch", fontSize: 14px, fontWeight: 600, lineHeight: 20px }
 spacing:
   base: 4px
   xs: 4px
@@ -68,7 +68,7 @@ The product uses black and white as its primary contrast pair. Neutral grays sep
 
 ## Typography
 
-Use the platform system sans-serif stack for speed, legibility, and a native-adjacent feel. Body text is never smaller than 16px in inputs. Weight and spacing establish hierarchy; do not use compressed tracking or oversized display type in application views.
+Use Stack Sans Notch for body and interface text, with system sans-serif fallbacks while the web font loads. Use Prata at its native 400 weight for headings only, with a serif fallback. Body text is never smaller than 16px in inputs. Weight and spacing establish hierarchy; do not use compressed tracking or oversized display type in application views.
 
 ## Layout
 
@@ -90,4 +90,4 @@ Forms use clear labels, full-width controls on `surface-container`, visible keyb
 
 Do use semantic color roles and spacing tokens. Do preserve user zoom and system appearance settings. Do keep captured media and information more visually prominent than interface chrome.
 
-Do not introduce a component library, downloaded font, decorative gradient, color accent for routine controls, or nested card layout.
+Do not introduce a component library, additional font family, decorative gradient, color accent for routine controls, or nested card layout.

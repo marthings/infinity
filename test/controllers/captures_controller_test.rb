@@ -9,6 +9,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     get captures_path
 
     assert_response :success
+    assert_select "link[rel='stylesheet'][href*='family=Prata']"
     assert_select "[data-native-navbar='Infinity']"
     assert_select "h1.native-hidden", "Infinity"
     assert_select "form[data-controller='quick-capture']"
