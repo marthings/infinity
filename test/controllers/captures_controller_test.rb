@@ -23,8 +23,8 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "input[name='capture[tag_ids][]']", count: 0
     assert_select "a[href=?]", new_capture_path, text: "Add manually"
     assert_select "a.application-brand[href=?]", root_path, text: "Infinity"
-    assert_select "button.menu-toggle[aria-controls='application-menu'][aria-expanded='false']"
-    assert_select "nav#application-menu[hidden] a[href=?]", collections_path, text: "Collections"
+    assert_select "button.menu-toggle[popovertarget='application-menu']"
+    assert_select "nav#application-menu[popover='auto'] a[href=?]", collections_path, text: "Collections"
     assert_select "a", text: captures(:link).title
     assert_select "a", text: captures(:note).note, count: 0
   end

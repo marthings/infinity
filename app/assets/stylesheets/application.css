@@ -319,6 +319,7 @@
     border-radius: var(--radius-control);
     background: transparent;
     color: var(--color-on-surface);
+    anchor-name: --application-menu-trigger;
   }
 
   .menu-toggle:hover {
@@ -332,13 +333,34 @@
   }
 
   .application-menu {
-    display: grid;
-    grid-column: 1 / -1;
+    position: fixed;
+    position-anchor: --application-menu-trigger;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    inline-size: min(18rem, calc(100vw - var(--space-8)));
     gap: var(--space-2);
-    padding-block: var(--space-2);
+    margin: var(--space-2) 0 0;
+    padding: var(--space-3);
+    border: 0;
+    border-radius: var(--radius-control);
+    background: var(--color-surface-container-high);
+    color: var(--color-on-surface);
+  }
+
+  .application-menu:not(:popover-open) {
+    display: none;
+  }
+
+  .application-menu:popover-open {
+    display: grid;
   }
 
   .application-menu a {
+    display: flex;
+    align-items: center;
+    min-block-size: var(--control-min-height);
+    padding-inline: var(--space-2);
+    border-radius: var(--radius-control);
     color: var(--color-on-surface-variant);
     font-size: var(--font-size-label);
     font-weight: var(--font-weight-label);
@@ -347,6 +369,7 @@
 
   .application-menu a:hover,
   .application-menu a:focus-visible {
+    background: var(--color-surface-container);
     color: var(--color-on-surface);
   }
 
