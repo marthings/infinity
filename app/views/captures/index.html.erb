@@ -1,5 +1,8 @@
-<section class="capture-page">
-  <%= native_navbar_tag("Infinity") %>
+<header class="native-home-header native-inset-top">
+  <p>Infinity</p>
+</header>
+
+<section class="capture-page native-home-page">
   <%= turbo_stream_from [ Current.user, :captures ] %>
 
   <header class="page-header">
