@@ -3,7 +3,7 @@
 
   <header class="page-header">
     <h1 class="native-hidden"><%= @capture.title.presence || @capture.source_name.presence || "Untitled capture" %></h1>
-    <%= link_to "Back to captures", captures_path %>
+    <%= link_to "Back to captures", captures_path, class: "native-hidden" %>
   </header>
 
   <% if source_url = safe_source_url(@capture.source_url) %>
