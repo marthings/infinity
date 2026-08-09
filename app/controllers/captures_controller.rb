@@ -2,6 +2,7 @@ class CapturesController < ApplicationController
   before_action :set_capture, only: %i[ show edit update destroy ]
 
   def index
+    @capture = Current.user.captures.build
     @captures = Current.user.captures.order(created_at: :desc)
   end
 
@@ -21,7 +22,8 @@ class CapturesController < ApplicationController
     if @capture.save
       redirect_to @capture, notice: "Capture saved."
     else
-      render :new, status: :unprocessable_entity
+      @captures = Current.user.captures.order(created_at: :desc) if quick_capture?
+      render quick_capture? ? :index : :new, status: :unprocessable_entity
     end
   end
 
@@ -45,5 +47,9 @@ class CapturesController < ApplicationController
 
     def capture_params
       params.expect(capture: [ :source_url, :source_name, :title, :description, :note, :published_at, uploads: [] ])
+    end
+
+    def quick_capture?
+      params[:capture_form] == "quick"
     end
 end

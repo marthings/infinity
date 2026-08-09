@@ -37,6 +37,14 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "[role=alert]"
   end
 
+  test "quick capture returns errors to the inbox" do
+    post captures_path, params: { capture: { source_url: " " }, capture_form: "quick" }
+
+    assert_response :unprocessable_entity
+    assert_select "h1", "Infinity"
+    assert_select "[role=alert]"
+  end
+
   test "show does not expose another user's capture" do
     get capture_path(captures(:note))
 

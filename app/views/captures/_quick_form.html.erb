@@ -1,0 +1,29 @@
+<%= form_with model: capture, class: "quick-capture-form" do |form| %>
+  <%= hidden_field_tag :capture_form, "quick" %>
+
+  <% if capture.errors.any? %>
+    <section class="form-errors" role="alert" aria-labelledby="quick-capture-errors-title">
+      <h2 id="quick-capture-errors-title"><%= pluralize(capture.errors.count, "error") %> prevented this capture from being saved</h2>
+      <ul>
+        <% capture.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <p class="field">
+    <%= form.label :source_url, "Paste a link" %>
+    <%= form.url_field :source_url %>
+  </p>
+
+  <p class="field">
+    <%= form.label :uploads, "Choose files" %>
+    <%= form.file_field :uploads, multiple: true %>
+  </p>
+
+  <p class="quick-capture-actions">
+    <%= form.submit "Save capture" %>
+    <%= link_to "Add details", new_capture_path %>
+  </p>
+<% end %>
