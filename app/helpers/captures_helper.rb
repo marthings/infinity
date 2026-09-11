@@ -4,6 +4,10 @@ module CapturesHelper
     detail: { resize_to_limit: [ 1280, 1280 ] }
   }.freeze
 
+  def capture_preview_alt(capture)
+    capture.title.presence || capture.source_name.presence || "Saved capture"
+  end
+
   def safe_source_url(source_url)
     return if source_url.blank?
 
@@ -11,6 +15,12 @@ module CapturesHelper
     uri.to_s if uri.is_a?(URI::HTTP) && uri.host.present?
   rescue URI::InvalidURIError
     nil
+  end
+
+  def capture_preview_representation(capture, size: :inbox)
+    return unless capture.preview_image.attached?
+
+    capture_upload_representation(capture.preview_image, size: size)
   end
 
   def capture_upload_representation(upload, size: :inbox)

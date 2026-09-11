@@ -1,6 +1,11 @@
 require "test_helper"
 
 class CapturesHelperTest < ActionView::TestCase
+  test "uses the capture title as preview alternative text" do
+    assert_equal "A saved link", capture_preview_alt(captures(:link))
+    assert_equal "Saved capture", capture_preview_alt(Capture.new)
+  end
+
   test "returns absolute HTTP and HTTPS URLs" do
     assert_equal "http://example.com", safe_source_url("http://example.com")
     assert_equal "https://example.com/inspiration", safe_source_url("https://example.com/inspiration")
@@ -9,6 +14,15 @@ class CapturesHelperTest < ActionView::TestCase
   test "rejects unsafe URLs" do
     assert_nil safe_source_url("javascript:alert(1)")
     assert_nil safe_source_url("file:///private/inspiration")
+  end
+
+  test "returns an image variant for a local link preview" do
+    capture = captures(:link)
+    capture.preview_image.attach(io: file_fixture("preview.png").open, filename: "preview.png", content_type: "image/png")
+
+    representation = capture_preview_representation(capture, size: :inbox)
+
+    assert_equal [ 640, 640 ], representation.variation.transformations[:resize_to_limit]
   end
 
   test "returns an image variant for variable uploads" do

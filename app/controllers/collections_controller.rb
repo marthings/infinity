@@ -6,7 +6,7 @@ class CollectionsController < ApplicationController
   end
 
   def show
-    @captures = @collection.captures.with_attached_uploads
+    @captures = @collection.captures.with_attached_preview_image.with_attached_uploads
   end
 
   def new

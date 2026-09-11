@@ -6,6 +6,8 @@
     <%= link_to "Back to captures", captures_path, class: "native-hidden" %>
   </header>
 
+  <%= render "preview", capture: @capture, size: :detail %>
+
   <% if source_url = safe_source_url(@capture.source_url) %>
     <p><%= link_to @capture.source_url, source_url, target: "_blank", rel: "noopener noreferrer" %></p>
   <% end %>

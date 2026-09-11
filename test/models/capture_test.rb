@@ -61,6 +61,43 @@ class CaptureTest < ActiveSupport::TestCase
     assert_equal "Example", capture.source_name
   end
 
+  test "attaches a preview image to the owning user's capture" do
+    capture = Capture.create!(user: users(:one), source_url: "https://www.example.com/article")
+    other = captures(:note)
+    image = Capture::LinkPreview::Image.new(
+      io: file_fixture("preview.png").open,
+      filename: "preview.png",
+      content_type: "image/png"
+    )
+    preview = Capture::LinkPreview::Preview.new("An example article", "A useful description", "Example", "https://example.com/og.png", image)
+
+    capture.apply_link_preview(preview)
+
+    assert_equal "An example article", capture.reload.title
+    assert_predicate capture.preview_image, :attached?
+    assert_equal "preview.png", capture.preview_image.filename.to_s
+    assert_equal users(:one), capture.user
+    assert_not other.preview_image.attached?
+  end
+
+  test "exposes the attached preview image as the visual preview" do
+    capture = captures(:link)
+    capture.preview_image.attach(io: file_fixture("preview.png").open, filename: "preview.png", content_type: "image/png")
+    capture.uploads.attach(io: file_fixture("inspiration.png").open, filename: "upload.png", content_type: "image/png")
+
+    assert_equal capture.preview_image, capture.visual_preview
+  end
+
+  test "leaves the capture usable when preview image data is missing" do
+    capture = Capture.create!(user: users(:one), source_url: "https://www.example.com/article")
+    preview = Capture::LinkPreview::Preview.new("An example article", "A useful description", "Example")
+
+    capture.apply_link_preview(preview)
+
+    assert_equal "An example article", capture.reload.title
+    assert_not capture.preview_image.attached?
+  end
+
   test "queues link enrichment after creating a link capture" do
     capture = captures(:link)
 

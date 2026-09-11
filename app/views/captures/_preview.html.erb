@@ -1,0 +1,5 @@
+<% if representation = capture_preview_representation(capture, size: local_assigns.fetch(:size, :inbox)) %>
+  <figure class="capture-preview">
+    <%= image_tag representation, alt: capture_preview_alt(capture), loading: (local_assigns.fetch(:size, :inbox) == :inbox ? "lazy" : nil) %>
+  </figure>
+<% end %>

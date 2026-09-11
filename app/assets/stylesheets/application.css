@@ -549,6 +549,27 @@
     padding-block: var(--space-1);
   }
 
+  .capture-preview {
+    margin: 0;
+  }
+
+  .capture-preview img,
+  .capture-upload-preview img {
+    display: block;
+    inline-size: auto;
+    max-inline-size: 100%;
+    block-size: auto;
+    max-block-size: 20rem;
+    object-fit: contain;
+    border-radius: var(--radius-control);
+    background: var(--color-surface-container);
+  }
+
+  .capture-page .capture-preview img,
+  .capture-page .capture-upload-preview img {
+    max-block-size: 36rem;
+  }
+
   .capture-page .capture-uploads,
   .capture-item .capture-uploads {
     display: grid;
@@ -567,21 +588,6 @@
   .capture-upload-link {
     display: block;
     margin: 0;
-  }
-
-  .capture-upload-preview img {
-    display: block;
-    inline-size: auto;
-    max-inline-size: 100%;
-    block-size: auto;
-    max-block-size: 20rem;
-    object-fit: contain;
-    border-radius: var(--radius-control);
-    background: var(--color-surface-container);
-  }
-
-  .capture-page .capture-upload-preview img {
-    max-block-size: 36rem;
   }
 
   .capture-upload-fallback {

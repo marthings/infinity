@@ -1,4 +1,6 @@
 <article id="<%= dom_id capture %>" class="capture-item">
+  <%= render "captures/preview", capture: capture, size: :inbox %>
+
   <% if capture.uploads.attached? %>
     <%= render "captures/uploads", uploads: capture.uploads, capture: capture, size: :inbox %>
   <% end %>
