@@ -17,6 +17,8 @@ class ProfilesControllerTest < ActionDispatch::IntegrationTest
     assert_select "[data-native-navbar='Profile']"
     assert_select "[data-native-identity]"
     assert_select "main.native-inset"
+    assert_select "section.phone-save h2", "Save from your phone"
+    assert_select "section.phone-save code", text: /#{Regexp.escape(share_url)}\?url=LINK/
   end
 
   test "updates the signed-in user email address" do

@@ -6,7 +6,7 @@
     <%= link_to "Back to captures", captures_path, class: "native-hidden" %>
   </header>
 
-  <%= render "preview", capture: @capture %>
+  <%= render "preview", capture: @capture, size: :detail %>
 
   <% if source_url = safe_source_url(@capture.source_url) %>
     <p><%= link_to @capture.source_url, source_url, target: "_blank", rel: "noopener noreferrer" %></p>
@@ -45,11 +45,7 @@
   <% if @capture.uploads.attached? %>
     <section aria-labelledby="uploads-title">
       <h2 id="uploads-title">Uploads</h2>
-      <ul>
-        <% @capture.uploads.each do |upload| %>
-          <li><%= link_to upload.filename, rails_blob_path(upload, disposition: "attachment") %></li>
-        <% end %>
-      </ul>
+      <%= render "captures/uploads", uploads: @capture.uploads, capture: @capture, size: :detail %>
     </section>
   <% end %>
 

@@ -1,5 +1,9 @@
 <article id="<%= dom_id capture %>" class="capture-item">
-  <%= render "captures/preview", capture: capture %>
+  <%= render "captures/preview", capture: capture, size: :inbox %>
+
+  <% if capture.uploads.attached? %>
+    <%= render "captures/uploads", uploads: capture.uploads, capture: capture, size: :inbox %>
+  <% end %>
 
   <h2><%= link_to capture.title.presence || capture.source_name.presence || "Untitled capture", capture %></h2>
 

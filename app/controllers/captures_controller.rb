@@ -10,8 +10,24 @@ class CapturesController < ApplicationController
   end
 
   def new
-    @capture = Current.user.captures.build
+    @capture = Current.user.captures.build(source_url: params[:source_url].presence || params[:url].presence)
     load_organization
+  end
+
+  def share
+    if share_params_missing?
+      redirect_to new_capture_path
+      return
+    end
+
+    @capture = Current.user.captures.build(source_url: shared_source_url)
+
+    if @capture.save
+      redirect_to @capture, notice: "Capture saved."
+    else
+      load_organization
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def edit
@@ -50,7 +66,7 @@ class CapturesController < ApplicationController
 
   private
     def set_capture
-      @capture = Current.user.captures.find(params[:id])
+      @capture = Current.user.captures.with_attached_preview_image.with_attached_uploads.find(params[:id])
     end
 
     def capture_params
@@ -67,5 +83,16 @@ class CapturesController < ApplicationController
 
     def quick_capture?
       params[:capture_form] == "quick"
+    end
+
+    def share_params_missing?
+      params[:url].blank? && params[:source_url].blank? && params[:text].blank?
+    end
+
+    def shared_source_url
+      explicit = params[:url].presence || params[:source_url].presence
+      return explicit if explicit
+
+      Capture.http_url_from(params[:text])
     end
 end

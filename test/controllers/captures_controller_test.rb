@@ -96,6 +96,60 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.native-hidden", "Back to capture"
   end
 
+  test "index shows an image variant for uploaded images" do
+    capture = attach_owned_upload("Studio photo", "inspiration.png", "image/png")
+
+    get captures_path
+
+    assert_response :success
+    assert_select "##{dom_id(capture)} img[alt='inspiration.png'][src*='representations']"
+    assert_select "##{dom_id(capture)} a.capture-upload-link[href=?]", capture_path(capture)
+    assert_select "##{dom_id(capture)} .capture-upload-fallback", count: 0
+  end
+
+  test "index shows an accessible fallback for unsupported uploads" do
+    capture = attach_owned_upload("Notes file", "inspiration.txt", "text/plain")
+
+    get captures_path
+
+    assert_response :success
+    assert_select "##{dom_id(capture)} img", count: 0
+    assert_select "##{dom_id(capture)} .capture-upload-filename", text: "inspiration.txt"
+    assert_select "##{dom_id(capture)} .capture-upload-type", text: "text/plain"
+    assert_select "##{dom_id(capture)} a[href*='rails/active_storage/blobs']", text: "Download"
+  end
+
+  test "show renders an image variant and download details" do
+    capture = attach_owned_upload("Studio photo", "inspiration.png", "image/png")
+
+    get capture_path(capture)
+
+    assert_response :success
+    assert_select "img[alt='inspiration.png'][src*='representations']"
+    assert_select ".capture-upload-filename", text: "inspiration.png"
+    assert_select ".capture-upload-type", text: "image/png"
+    assert_select "a[href*='rails/active_storage/blobs']", text: "Download"
+
+    get css_select("img[alt='inspiration.png']").first["src"]
+
+    assert_response :redirect
+    follow_redirect!
+    assert_response :success
+    assert_match %r{\Aimage/}, response.media_type
+  end
+
+  test "show renders an accessible fallback for unsupported uploads" do
+    capture = attach_owned_upload("Notes file", "inspiration.txt", "text/plain")
+
+    get capture_path(capture)
+
+    assert_response :success
+    assert_select "img", count: 0
+    assert_select ".capture-upload-filename", text: "inspiration.txt"
+    assert_select ".capture-upload-type", text: "text/plain"
+    assert_select "a[href*='rails/active_storage/blobs']", text: "Download"
+  end
+
   test "show does not expose another user's capture" do
     captures(:note).preview_image.attach(io: file_fixture("preview.png").open, filename: "secret.png", content_type: "image/png")
 
@@ -110,17 +164,7 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     get captures_path
 
     assert_response :success
-    assert_select ".capture-item .capture-preview img[alt=?]", captures(:link).title
-  end
-
-  test "index renders an uploaded image as the visual preview" do
-    capture = users(:one).captures.create!(title: "A photo", note: "Pinned to the board")
-    capture.uploads.attach(io: file_fixture("preview.png").open, filename: "upload.png", content_type: "image/png")
-
-    get captures_path
-
-    assert_response :success
-    assert_select ".capture-item .capture-preview img[alt=?]", capture.title
+    assert_select ".capture-item .capture-preview img[alt=?][src*='representations']", captures(:link).title
   end
 
   test "show renders a local preview image" do
@@ -129,7 +173,25 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     get capture_path(captures(:link))
 
     assert_response :success
-    assert_select ".capture-preview img[alt=?]", captures(:link).title
+    assert_select ".capture-preview img[alt=?][src*='representations']", captures(:link).title
+  end
+
+  test "preview paths stay within the signed-in user's captures" do
+    other = users(:two).captures.create!(title: "Private photo")
+    other.uploads.attach(
+      io: file_fixture("inspiration.png").open,
+      filename: "private.png",
+      content_type: "image/png"
+    )
+
+    get capture_path(other)
+
+    assert_response :not_found
+
+    get captures_path
+
+    assert_select "img[alt='private.png']", count: 0
+    assert_select ".capture-upload-filename", text: "private.png", count: 0
   end
 
   test "show provides native navigation for a capture" do
@@ -176,6 +238,77 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_empty captures(:link).tags
   end
 
+  test "share saves a URL for the signed-in user" do
+    assert_difference -> { users(:one).captures.count }, +1 do
+      get share_path, params: { url: "https://example.com/from-phone" }
+    end
+
+    capture = Capture.last
+    assert_redirected_to capture_path(capture)
+    assert_equal "https://example.com/from-phone", capture.source_url
+    assert_equal users(:one), capture.user
+    assert_equal "example.com", capture.title
+  end
+
+  test "share extracts an HTTP URL from shared text" do
+    assert_difference -> { users(:one).captures.count }, +1 do
+      get share_path, params: { text: "Look at this https://example.com/video?v=1 tonight" }
+    end
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_equal "https://example.com/video?v=1", Capture.last.source_url
+  end
+
+  test "share does not create a capture without a session" do
+    sign_out
+
+    assert_no_difference -> { Capture.count } do
+      get share_path, params: { url: "https://example.com/from-phone" }
+    end
+
+    assert_redirected_to new_session_path
+  end
+
+  test "share saves the URL after sign-in returns to the share target" do
+    sign_out
+
+    get share_path, params: { url: "https://example.com/after-sign-in" }
+    assert_redirected_to new_session_path
+
+    post session_path, params: { email_address: users(:one).email_address, password: "password" }
+    assert_redirected_to share_url(url: "https://example.com/after-sign-in")
+
+    assert_difference -> { users(:one).captures.count }, +1 do
+      follow_redirect!
+    end
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_equal "https://example.com/after-sign-in", Capture.last.source_url
+  end
+
+  test "share rejects a non-web URL" do
+    assert_no_difference -> { Capture.count } do
+      get share_path, params: { url: "javascript:alert(1)" }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "[role=alert]"
+    assert_select "input[name='capture[source_url]'][value='javascript:alert(1)']"
+  end
+
+  test "share without a URL opens the capture form" do
+    get share_path
+
+    assert_redirected_to new_capture_path
+  end
+
+  test "new prefills a shared source URL" do
+    get new_capture_path, params: { source_url: "https://example.com/prefill" }
+
+    assert_response :success
+    assert_select "input[name='capture[source_url]'][value='https://example.com/prefill']"
+  end
+
   test "destroy removes the signed-in user's capture" do
     assert_difference -> { Capture.count }, -1 do
       delete capture_path(captures(:link))
@@ -183,4 +316,19 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to captures_path
   end
+
+  private
+    def attach_owned_upload(title, filename, content_type)
+      capture = users(:one).captures.create!(title: title)
+      capture.uploads.attach(
+        io: file_fixture(filename).open,
+        filename: filename,
+        content_type: content_type
+      )
+      capture
+    end
+
+    def dom_id(record)
+      ActionView::RecordIdentifier.dom_id(record)
+    end
 end

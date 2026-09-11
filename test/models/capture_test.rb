@@ -80,19 +80,12 @@ class CaptureTest < ActiveSupport::TestCase
     assert_not other.preview_image.attached?
   end
 
-  test "prefers the local preview image over an upload" do
+  test "exposes the attached preview image as the visual preview" do
     capture = captures(:link)
     capture.preview_image.attach(io: file_fixture("preview.png").open, filename: "preview.png", content_type: "image/png")
-    capture.uploads.attach(io: file_fixture("preview.png").open, filename: "upload.png", content_type: "image/png")
+    capture.uploads.attach(io: file_fixture("inspiration.png").open, filename: "upload.png", content_type: "image/png")
 
     assert_equal capture.preview_image, capture.visual_preview
-  end
-
-  test "uses an uploaded image as the visual preview when no link preview exists" do
-    capture = Capture.create!(user: users(:one), note: "A photo")
-    capture.uploads.attach(io: file_fixture("preview.png").open, filename: "upload.png", content_type: "image/png")
-
-    assert_equal capture.uploads.first, capture.visual_preview
   end
 
   test "leaves the capture usable when preview image data is missing" do
@@ -119,6 +112,18 @@ class CaptureTest < ActiveSupport::TestCase
 
       assert_predicate capture, :valid?
     end
+  end
+
+  test "extracts the first HTTP URL from shared values" do
+    assert_equal "https://example.com/video", Capture.http_url_from("Look at https://example.com/video tonight")
+    assert_equal "http://example.com", Capture.http_url_from(nil, "http://example.com")
+    assert_equal "https://example.com/from-phone", Capture.http_url_from("Saved https://example.com/from-phone.")
+  end
+
+  test "does not extract unsafe shared URLs" do
+    assert_nil Capture.http_url_from("javascript:alert(1)")
+    assert_nil Capture.http_url_from("file:///private/inspiration")
+    assert_nil Capture.http_url_from(" ")
   end
 
   test "rejects non-web source URLs" do

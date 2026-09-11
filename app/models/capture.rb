@@ -18,6 +18,31 @@ class Capture < ApplicationRecord
   validate :has_content
   validate :source_url_uses_http
 
+  def self.http_url_from(*values)
+    values.each do |value|
+      next if value.blank?
+
+      stripped = value.to_s.strip
+      return stripped if safe_http_url?(stripped)
+
+      match = stripped[/\bhttps?:\/\/[^\s<>"'\\]+/i]
+      next unless match
+
+      candidate = match.sub(/[),.;!?]+$/, "")
+      return candidate if safe_http_url?(candidate)
+    end
+
+    nil
+  end
+
+  def self.safe_http_url?(value)
+    uri = URI.parse(value.to_s)
+    uri.is_a?(URI::HTTP) && uri.host.present?
+  rescue URI::InvalidURIError
+    false
+  end
+  private_class_method :safe_http_url?
+
   def enrich_link_preview
     apply_link_preview(Capture::LinkPreview.fetch(source_url))
   rescue Capture::LinkPreview::UnsafeUrl, Capture::LinkPreview::UnsupportedResponse
@@ -42,9 +67,7 @@ class Capture < ApplicationRecord
   end
 
   def visual_preview
-    return preview_image if preview_image.attached? && preview_image.image?
-
-    uploads.detect(&:image?)
+    preview_image if preview_image.attached? && preview_image.image?
   end
 
   private
