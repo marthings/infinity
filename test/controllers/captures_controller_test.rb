@@ -129,6 +129,13 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select ".capture-upload-filename", text: "inspiration.png"
     assert_select ".capture-upload-type", text: "image/png"
     assert_select "a[href*='rails/active_storage/blobs']", text: "Download"
+
+    get css_select("img[alt='inspiration.png']").first["src"]
+
+    assert_response :redirect
+    follow_redirect!
+    assert_response :success
+    assert_match %r{\Aimage/}, response.media_type
   end
 
   test "show renders an accessible fallback for unsupported uploads" do
