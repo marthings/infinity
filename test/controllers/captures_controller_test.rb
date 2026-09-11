@@ -96,10 +96,75 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_select "a.native-hidden", "Back to capture"
   end
 
+  test "index shows an image variant for uploaded images" do
+    capture = attach_owned_upload("Studio photo", "inspiration.png", "image/png")
+
+    get captures_path
+
+    assert_response :success
+    assert_select "##{dom_id(capture)} img[alt='inspiration.png'][src*='representations']"
+    assert_select "##{dom_id(capture)} a.capture-upload-link[href=?]", capture_path(capture)
+    assert_select "##{dom_id(capture)} .capture-upload-fallback", count: 0
+  end
+
+  test "index shows an accessible fallback for unsupported uploads" do
+    capture = attach_owned_upload("Notes file", "inspiration.txt", "text/plain")
+
+    get captures_path
+
+    assert_response :success
+    assert_select "##{dom_id(capture)} img", count: 0
+    assert_select "##{dom_id(capture)} .capture-upload-filename", text: "inspiration.txt"
+    assert_select "##{dom_id(capture)} .capture-upload-type", text: "text/plain"
+    assert_select "##{dom_id(capture)} a[href*='rails/active_storage/blobs']", text: "Download"
+  end
+
+  test "show renders an image variant and download details" do
+    capture = attach_owned_upload("Studio photo", "inspiration.png", "image/png")
+
+    get capture_path(capture)
+
+    assert_response :success
+    assert_select "img[alt='inspiration.png'][src*='representations']"
+    assert_select ".capture-upload-filename", text: "inspiration.png"
+    assert_select ".capture-upload-type", text: "image/png"
+    assert_select "a[href*='rails/active_storage/blobs']", text: "Download"
+  end
+
+  test "show renders an accessible fallback for unsupported uploads" do
+    capture = attach_owned_upload("Notes file", "inspiration.txt", "text/plain")
+
+    get capture_path(capture)
+
+    assert_response :success
+    assert_select "img", count: 0
+    assert_select ".capture-upload-filename", text: "inspiration.txt"
+    assert_select ".capture-upload-type", text: "text/plain"
+    assert_select "a[href*='rails/active_storage/blobs']", text: "Download"
+  end
+
   test "show does not expose another user's capture" do
     get capture_path(captures(:note))
 
     assert_response :not_found
+  end
+
+  test "preview paths stay within the signed-in user's captures" do
+    other = users(:two).captures.create!(title: "Private photo")
+    other.uploads.attach(
+      io: file_fixture("inspiration.png").open,
+      filename: "private.png",
+      content_type: "image/png"
+    )
+
+    get capture_path(other)
+
+    assert_response :not_found
+
+    get captures_path
+
+    assert_select "img[alt='private.png']", count: 0
+    assert_select ".capture-upload-filename", text: "private.png", count: 0
   end
 
   test "show provides native navigation for a capture" do
@@ -153,4 +218,19 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to captures_path
   end
+
+  private
+    def attach_owned_upload(title, filename, content_type)
+      capture = users(:one).captures.create!(title: title)
+      capture.uploads.attach(
+        io: file_fixture(filename).open,
+        filename: filename,
+        content_type: content_type
+      )
+      capture
+    end
+
+    def dom_id(record)
+      ActionView::RecordIdentifier.dom_id(record)
+    end
 end

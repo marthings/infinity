@@ -1,4 +1,8 @@
 <article id="<%= dom_id capture %>" class="capture-item">
+  <% if capture.uploads.attached? %>
+    <%= render "captures/uploads", uploads: capture.uploads, capture: capture, size: :inbox %>
+  <% end %>
+
   <h2><%= link_to capture.title.presence || capture.source_name.presence || "Untitled capture", capture %></h2>
 
   <% if source_url = safe_source_url(capture.source_url) %>

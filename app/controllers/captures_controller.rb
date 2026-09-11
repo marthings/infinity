@@ -3,7 +3,7 @@ class CapturesController < ApplicationController
 
   def index
     @capture = Current.user.captures.build
-    @captures = Current.user.captures.order(created_at: :desc)
+    @captures = Current.user.captures.with_attached_uploads.order(created_at: :desc)
   end
 
   def show
@@ -25,7 +25,7 @@ class CapturesController < ApplicationController
       redirect_to @capture, notice: "Capture saved."
     else
       if quick_capture?
-        @captures = Current.user.captures.order(created_at: :desc)
+        @captures = Current.user.captures.with_attached_uploads.order(created_at: :desc)
         render :index, status: :unprocessable_entity
       else
         load_organization
@@ -50,7 +50,7 @@ class CapturesController < ApplicationController
 
   private
     def set_capture
-      @capture = Current.user.captures.find(params[:id])
+      @capture = Current.user.captures.with_attached_uploads.find(params[:id])
     end
 
     def capture_params

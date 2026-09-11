@@ -1,0 +1,25 @@
+<li class="capture-upload">
+  <% representation = capture_upload_representation(upload, size: size) %>
+
+  <% if representation %>
+    <figure class="capture-upload-preview">
+      <% image = image_tag(representation, alt: upload.filename.to_s, loading: (size == :inbox ? "lazy" : nil)) %>
+
+      <% if size == :inbox %>
+        <%= link_to capture, class: "capture-upload-link" do %>
+          <%= image %>
+        <% end %>
+      <% else %>
+        <%= image %>
+      <% end %>
+    </figure>
+  <% end %>
+
+  <% if representation.nil? || size == :detail %>
+    <div class="capture-upload-fallback">
+      <p class="capture-upload-filename"><%= upload.filename %></p>
+      <p class="capture-upload-type"><%= capture_upload_media_type(upload) %></p>
+      <p><%= link_to "Download", rails_blob_path(upload, disposition: "attachment"), "aria-label": "Download #{upload.filename}" %></p>
+    </div>
+  <% end %>
+</li>
