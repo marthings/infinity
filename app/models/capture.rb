@@ -6,6 +6,7 @@ class Capture < ApplicationRecord
   has_many :taggings, dependent: :destroy
   has_many :tags, through: :taggings
   has_many_attached :uploads
+  has_one_attached :preview_image
 
   normalizes :source_url, :source_name, :title, :description, :note, with: ->(value) { value&.strip&.presence }
 
@@ -31,10 +32,34 @@ class Capture < ApplicationRecord
     attributes[:title] = preview.title if title == title_from_source_url && preview.title.present?
     attributes[:description] = preview.description if description.blank? && preview.description.present?
 
-    update!(attributes) if attributes.any?
+    changed_image = attach_preview_image(preview.image)
+
+    if attributes.any?
+      update!(attributes)
+    elsif changed_image
+      broadcast_inbox_preview
+    end
+  end
+
+  def visual_preview
+    return preview_image if preview_image.attached? && preview_image.image?
+
+    uploads.detect(&:image?)
   end
 
   private
+    def attach_preview_image(image)
+      if image
+        preview_image.attach(io: image.io, filename: image.filename, content_type: image.content_type)
+        true
+      elsif preview_image.attached?
+        preview_image.purge
+        true
+      else
+        false
+      end
+    end
+
     def enrich_link_preview_later
       EnrichCaptureLinkJob.perform_later(self)
     end

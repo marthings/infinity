@@ -1,4 +1,6 @@
 <article id="<%= dom_id capture %>" class="capture-item">
+  <%= render "captures/preview", capture: capture %>
+
   <h2><%= link_to capture.title.presence || capture.source_name.presence || "Untitled capture", capture %></h2>
 
   <% if source_url = safe_source_url(capture.source_url) %>

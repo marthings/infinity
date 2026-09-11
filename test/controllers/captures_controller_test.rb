@@ -97,9 +97,39 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "show does not expose another user's capture" do
+    captures(:note).preview_image.attach(io: file_fixture("preview.png").open, filename: "secret.png", content_type: "image/png")
+
     get capture_path(captures(:note))
 
     assert_response :not_found
+  end
+
+  test "index renders a local preview image" do
+    captures(:link).preview_image.attach(io: file_fixture("preview.png").open, filename: "preview.png", content_type: "image/png")
+
+    get captures_path
+
+    assert_response :success
+    assert_select ".capture-item .capture-preview img[alt=?]", captures(:link).title
+  end
+
+  test "index renders an uploaded image as the visual preview" do
+    capture = users(:one).captures.create!(note: "A photo")
+    capture.uploads.attach(io: file_fixture("preview.png").open, filename: "upload.png", content_type: "image/png")
+
+    get captures_path
+
+    assert_response :success
+    assert_select ".capture-item .capture-preview img[alt=?]", "A photo"
+  end
+
+  test "show renders a local preview image" do
+    captures(:link).preview_image.attach(io: file_fixture("preview.png").open, filename: "preview.png", content_type: "image/png")
+
+    get capture_path(captures(:link))
+
+    assert_response :success
+    assert_select ".capture-preview img[alt=?]", captures(:link).title
   end
 
   test "show provides native navigation for a capture" do

@@ -1,0 +1,5 @@
+<% if preview = capture.visual_preview %>
+  <figure class="capture-preview">
+    <%= image_tag preview, alt: capture_preview_alt(capture) %>
+  </figure>
+<% end %>

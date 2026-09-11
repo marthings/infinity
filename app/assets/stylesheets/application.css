@@ -521,6 +521,22 @@
     padding-block: var(--space-1);
   }
 
+  .capture-preview {
+    margin: 0;
+  }
+
+  .capture-preview img {
+    display: block;
+    inline-size: 100%;
+    max-block-size: 28rem;
+    object-fit: cover;
+    background: var(--color-surface-container);
+  }
+
+  .capture-item .capture-preview img {
+    aspect-ratio: 4 / 3;
+  }
+
   .capture-item h2 a {
     text-decoration: none;
   }
@@ -569,6 +585,10 @@
     .quick-capture-form {
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: end;
+    }
+
+    .capture-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .menu-create-icon {
