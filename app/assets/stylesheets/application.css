@@ -587,10 +587,6 @@
       align-items: end;
     }
 
-    .capture-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
     .menu-create-icon {
       display: none;
     }

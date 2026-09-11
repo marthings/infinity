@@ -5,6 +5,26 @@ module LinkPreviewHttpHelper
 
   FakeAddress = Struct.new(:ip_address)
 
+  module AddrinfoStub
+    def getaddrinfo(host, *)
+      return super unless Thread.current[:link_preview_http_responses]
+
+      begin
+        [ FakeAddress.new(IPAddr.new(host).to_s) ]
+      rescue IPAddr::InvalidAddressError
+        [ FakeAddress.new("203.0.113.10") ]
+      end
+    end
+  end
+
+  module HTTPStub
+    def new(host, port = nil, *)
+      return super unless Thread.current[:link_preview_http_responses]
+
+      FakeHTTP.new(host, port)
+    end
+  end
+
   class FakeHTTP
     def initialize(host, port, *)
       @host = host
@@ -67,22 +87,21 @@ module LinkPreviewHttpHelper
   end
 
   def stub_link_preview_http(responses)
+    install_link_preview_http_stubs
     Thread.current[:link_preview_http_responses] = responses
-
-    Addrinfo.stub(:getaddrinfo, method(:stubbed_preview_addrinfo)) do
-      Net::HTTP.stub(:new, ->(host, port, *) { FakeHTTP.new(host, port) }) do
-        yield
-      end
-    end
+    yield
   ensure
     Thread.current[:link_preview_http_responses] = nil
   end
 
-  def stubbed_preview_addrinfo(host, *)
-    ip = IPAddr.new(host)
-    [ FakeAddress.new(ip.to_s) ]
-  rescue IPAddr::InvalidAddressError
-    [ FakeAddress.new("203.0.113.10") ]
+  def stub_class_method(klass, name, value)
+    original = klass.method(name)
+    klass.define_singleton_method(name) do |*args, **kwargs, &block|
+      value.respond_to?(:call) ? value.call(*args, **kwargs, &block) : value
+    end
+    yield
+  ensure
+    klass.define_singleton_method(name, original)
   end
 
   def preview_html(title: "A useful article", description: "A concise summary", site_name: "Example", image_url: nil)
@@ -99,5 +118,17 @@ module LinkPreviewHttpHelper
         </head>
       </html>
     HTML
+  end
+
+  def self.install_link_preview_http_stubs
+    return if @installed_link_preview_http_stubs
+
+    Addrinfo.singleton_class.prepend(AddrinfoStub)
+    Net::HTTP.singleton_class.prepend(HTTPStub)
+    @installed_link_preview_http_stubs = true
+  end
+
+  def install_link_preview_http_stubs
+    LinkPreviewHttpHelper.install_link_preview_http_stubs
   end
 end

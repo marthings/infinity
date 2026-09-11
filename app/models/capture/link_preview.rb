@@ -8,8 +8,8 @@ require "uri"
 
 class Capture::LinkPreview
   Preview = Data.define(:title, :description, :source_name, :image_url, :image) do
-    def initialize(title, description, source_name, image_url = nil, image = nil)
-      super(title:, description:, source_name:, image_url:, image:)
+    def initialize(title: nil, description: nil, source_name: nil, image_url: nil, image: nil)
+      super
     end
   end
   Image = Data.define(:io, :filename, :content_type)
@@ -216,7 +216,7 @@ class Capture::LinkPreview
         candidate = if host.delete_prefix("www.") == "youtu.be"
           uri.path.delete_prefix("/").split("/").first
         else
-          query_value(uri, "v").presence || uri.path[ %r{\A/(?:shorts|embed|live)/([^/]+)}, 1 ]
+          query_value(uri, "v").presence || uri.path[%r{\A/(?:shorts|embed|live)/([^/]+)}, 1]
         end
 
         return candidate if candidate&.match?(YOUTUBE_VIDEO_ID)
@@ -242,8 +242,26 @@ class Capture::LinkPreview
       ip = IPAddr.new(address)
       return public_ip?(ip.native.to_s) if ip.ipv4_mapped?
 
-      !ip.loopback? && !ip.private? && !ip.link_local? && !ip.multicast? && !ip.unspecified?
+      !ip.loopback? && !ip.private? && !ip.link_local? && !multicast?(ip) && !unspecified?(ip)
     rescue IPAddr::InvalidAddressError
       false
+    end
+
+    def multicast?(ip)
+      if ip.respond_to?(:multicast?)
+        ip.multicast?
+      elsif ip.ipv4?
+        IPAddr.new("224.0.0.0/4").include?(ip)
+      else
+        IPAddr.new("ff00::/8").include?(ip)
+      end
+    end
+
+    def unspecified?(ip)
+      if ip.respond_to?(:unspecified?)
+        ip.unspecified?
+      else
+        ip == IPAddr.new(ip.ipv4? ? "0.0.0.0" : "::")
+      end
     end
 end

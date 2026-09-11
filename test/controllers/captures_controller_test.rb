@@ -114,13 +114,13 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index renders an uploaded image as the visual preview" do
-    capture = users(:one).captures.create!(note: "A photo")
+    capture = users(:one).captures.create!(title: "A photo", note: "Pinned to the board")
     capture.uploads.attach(io: file_fixture("preview.png").open, filename: "upload.png", content_type: "image/png")
 
     get captures_path
 
     assert_response :success
-    assert_select ".capture-item .capture-preview img[alt=?]", "A photo"
+    assert_select ".capture-item .capture-preview img[alt=?]", capture.title
   end
 
   test "show renders a local preview image" do

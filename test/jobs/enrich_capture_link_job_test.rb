@@ -1,6 +1,9 @@
 require "test_helper"
+require "test_helpers/link_preview_http_helper"
 
 class EnrichCaptureLinkJobTest < ActiveJob::TestCase
+  include LinkPreviewHttpHelper
+
   test "attaches a fetched preview image to the capture" do
     capture = captures(:link)
     image = Capture::LinkPreview::Image.new(
@@ -10,7 +13,7 @@ class EnrichCaptureLinkJobTest < ActiveJob::TestCase
     )
     preview = Capture::LinkPreview::Preview.new("An example article", "A useful description", "Example", "https://example.com/og.png", image)
 
-    Capture::LinkPreview.stub(:fetch, preview) do
+    stub_class_method(Capture::LinkPreview, :fetch, preview) do
       EnrichCaptureLinkJob.perform_now(capture)
     end
 
@@ -22,7 +25,7 @@ class EnrichCaptureLinkJobTest < ActiveJob::TestCase
   test "leaves the capture usable when enrichment fails" do
     capture = captures(:link)
 
-    Capture::LinkPreview.stub(:fetch, ->(*) { raise Capture::LinkPreview::UnsafeUrl }) do
+    stub_class_method(Capture::LinkPreview, :fetch, ->(*) { raise Capture::LinkPreview::UnsafeUrl }) do
       EnrichCaptureLinkJob.perform_now(capture)
     end
 
