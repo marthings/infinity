@@ -146,6 +146,77 @@ class CapturesControllerTest < ActionDispatch::IntegrationTest
     assert_empty captures(:link).tags
   end
 
+  test "share saves a URL for the signed-in user" do
+    assert_difference -> { users(:one).captures.count }, +1 do
+      get share_path, params: { url: "https://example.com/from-phone" }
+    end
+
+    capture = Capture.last
+    assert_redirected_to capture_path(capture)
+    assert_equal "https://example.com/from-phone", capture.source_url
+    assert_equal users(:one), capture.user
+    assert_equal "example.com", capture.title
+  end
+
+  test "share extracts an HTTP URL from shared text" do
+    assert_difference -> { users(:one).captures.count }, +1 do
+      get share_path, params: { text: "Look at this https://example.com/video?v=1 tonight" }
+    end
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_equal "https://example.com/video?v=1", Capture.last.source_url
+  end
+
+  test "share does not create a capture without a session" do
+    sign_out
+
+    assert_no_difference -> { Capture.count } do
+      get share_path, params: { url: "https://example.com/from-phone" }
+    end
+
+    assert_redirected_to new_session_path
+  end
+
+  test "share saves the URL after sign-in returns to the share target" do
+    sign_out
+
+    get share_path, params: { url: "https://example.com/after-sign-in" }
+    assert_redirected_to new_session_path
+
+    post session_path, params: { email_address: users(:one).email_address, password: "password" }
+    assert_redirected_to share_url(url: "https://example.com/after-sign-in")
+
+    assert_difference -> { users(:one).captures.count }, +1 do
+      follow_redirect!
+    end
+
+    assert_redirected_to capture_path(Capture.last)
+    assert_equal "https://example.com/after-sign-in", Capture.last.source_url
+  end
+
+  test "share rejects a non-web URL" do
+    assert_no_difference -> { Capture.count } do
+      get share_path, params: { url: "javascript:alert(1)" }
+    end
+
+    assert_response :unprocessable_entity
+    assert_select "[role=alert]"
+    assert_select "input[name='capture[source_url]'][value='javascript:alert(1)']"
+  end
+
+  test "share without a URL opens the capture form" do
+    get share_path
+
+    assert_redirected_to new_capture_path
+  end
+
+  test "new prefills a shared source URL" do
+    get new_capture_path, params: { source_url: "https://example.com/prefill" }
+
+    assert_response :success
+    assert_select "input[name='capture[source_url]'][value='https://example.com/prefill']"
+  end
+
   test "destroy removes the signed-in user's capture" do
     assert_difference -> { Capture.count }, -1 do
       delete capture_path(captures(:link))

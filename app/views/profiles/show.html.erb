@@ -39,4 +39,16 @@
 
     <p><%= form.submit "Save profile" %></p>
   <% end %>
+
+  <section class="phone-save" aria-labelledby="phone-save-title">
+    <h2 id="phone-save-title">Save from your phone</h2>
+    <p>Stay signed in, then share an HTTP or HTTPS link to this address. Infinity saves it to your private library.</p>
+    <p><code><%= share_url %>?url=LINK</code></p>
+    <ol>
+      <li>Create an iOS Shortcut that receives URLs and opens the address above with the shared link in place of <code>LINK</code>.</li>
+      <li>From Safari or another app, tap Share and choose that Shortcut.</li>
+      <li>On Android, a share that sends the URL as <code>url</code> or <code>text</code> can open the same address.</li>
+    </ol>
+    <p>Infinity does not appear as a system share-sheet app yet. Use the Shortcut for one-tap save until it does.</p>
+  </section>
 </section>

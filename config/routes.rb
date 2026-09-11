@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   resource :session
   resources :passwords, param: :token
   resources :captures
+  get "share", to: "captures#share", as: :share
   resources :collections
   resources :tags
   root "captures#index"
