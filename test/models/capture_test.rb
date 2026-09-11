@@ -77,6 +77,18 @@ class CaptureTest < ActiveSupport::TestCase
     end
   end
 
+  test "extracts the first HTTP URL from shared values" do
+    assert_equal "https://example.com/video", Capture.http_url_from("Look at https://example.com/video tonight")
+    assert_equal "http://example.com", Capture.http_url_from(nil, "http://example.com")
+    assert_equal "https://example.com/from-phone", Capture.http_url_from("Saved https://example.com/from-phone.")
+  end
+
+  test "does not extract unsafe shared URLs" do
+    assert_nil Capture.http_url_from("javascript:alert(1)")
+    assert_nil Capture.http_url_from("file:///private/inspiration")
+    assert_nil Capture.http_url_from(" ")
+  end
+
   test "rejects non-web source URLs" do
     capture = Capture.new(user: users(:one), source_url: "file:///private/inspiration")
 
