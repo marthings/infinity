@@ -6,7 +6,7 @@ class TagsController < ApplicationController
   end
 
   def show
-    @captures = @tag.captures.order(created_at: :desc)
+    @captures = @tag.captures.with_attached_uploads.order(created_at: :desc)
   end
 
   def new

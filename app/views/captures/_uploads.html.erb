@@ -1,0 +1,5 @@
+<ul class="capture-uploads">
+  <% uploads.each do |upload| %>
+    <%= render "captures/upload", upload: upload, capture: capture, size: size %>
+  <% end %>
+</ul>
