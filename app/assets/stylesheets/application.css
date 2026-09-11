@@ -543,12 +543,11 @@
 
   .capture-upload-preview img {
     display: block;
-    inline-size: 100%;
+    inline-size: auto;
     max-inline-size: 100%;
     block-size: auto;
     max-block-size: 20rem;
     object-fit: contain;
-    object-position: left center;
     border-radius: var(--radius-control);
     background: var(--color-surface-container);
   }
